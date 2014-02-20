@@ -1,3 +1,6 @@
+html, body{
+    background-image: none;
+}
 td, th {
     font-family: Verdana, Helvetica, sans-serif;
     margin: 0;

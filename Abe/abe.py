@@ -39,9 +39,9 @@ import base58
 
 __version__ = version.__version__
 
-ABE_APPNAME = "Abe"
+ABE_APPNAME = "CCC Abe"
 ABE_VERSION = __version__
-ABE_URL = 'https://github.com/bitcoin-abe/bitcoin-abe'
+ABE_URL = 'https://github.com/MatthewLM/cancercurecoin-abe'
 
 COPYRIGHT_YEARS = '2011'
 COPYRIGHT = "Abe developers"
@@ -62,15 +62,12 @@ DEFAULT_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="%(dotdot)s/../site_assets/mpos/css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="%(dotdot)s../site_assets/mpos/css/layout.css" />
     <link rel="stylesheet" type="text/css" href="%(dotdot)s%(STATIC_PATH)sabe.css" />
     <link rel="shortcut icon" href="%(dotdot)s%(STATIC_PATH)sfavicon.ico" />
     <title>%(title)s</title>
 </head>
 <body>
-    <h1><a href="%(dotdot)s%(HOMEPAGE)s"><img
-     src="%(dotdot)s%(STATIC_PATH)slogo32.png" alt="Abe logo" /></a> %(h1)s
-    </h1>
     %(body)s
     <p><a href="%(dotdot)sq">API</a> (machine-readable pages)</p>
     <p style="font-size: smaller">
@@ -79,8 +76,8 @@ DEFAULT_TEMPLATE = """
         </span>
         %(download)s
         Tips appreciated!
-        <a href="%(dotdot)saddress/%(DONATIONS_BTC)s">BTC</a>
-        <a href="%(dotdot)saddress/%(DONATIONS_NMC)s">NMC</a>
+        <a href="http://blockchain.info/address/">BTC</a>
+        <a href="%(dotdot)saddress/">CCC</a>
     </p>
 </body>
 </html>
@@ -1167,12 +1164,17 @@ class Abe:
     def search_form(abe, page):
         q = (page['params'].get('q') or [''])[0]
         return [
+            '<article class="module width_half centerHalf">'
+            '<header><h3>Search</h3></header>'
+            '<div class="module_content">'
             '<p>Search by address, block number or hash, transaction or'
             ' public key hash:</p>\n'
             '<form action="', page['dotdot'], 'search"><p>\n'
             '<input name="q" size="64" value="', escape(q), '" />'
             '<button type="submit">Search</button>\n'
-            '<br />Address or hash search requires at least the first ',
+            '<br />Address or hash search requires at least the first '
+            '</div>'
+            '</article>',
             HASH_PREFIX_MIN, ' characters.</p></form>\n']
 
     def handle_search(abe, page):
