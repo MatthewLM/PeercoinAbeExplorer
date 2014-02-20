@@ -31,6 +31,9 @@ th{
     position: absolute;
     top: 0;
 }
+#nav p a{
+    padding: 0 4px;
+}
 #navP2{
     text-align: center;
     width: 200px;
