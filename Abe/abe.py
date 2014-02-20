@@ -665,9 +665,9 @@ class Abe:
                           escape(chain.name), '?hi=', height, '">',
                           escape(chain.name), '</a> ', height]
 
-        body += abe.short_link(page, 'b/' + block_shortlink(block_hash))
+        body += abe.short_link(page, '/b/' + block_shortlink(block_hash))
 
-        body += ['<p>']
+        body += ['<article class="module width_half centerHalf"><header><h3>BLOCK INFORMATION</h3></header><div class="module_content">']
         if is_stake_chain:
             body += [
                 'Proof of Stake' if is_proof_of_stake else 'Proof of Work',
@@ -719,7 +719,7 @@ class Abe:
              ';total_ss=',total_ss,';destroyed=',destroyed]
             if abe.debug else '',
 
-            '</p>\n']
+            '</div></article>\n']
 
         body += ['<h3>Transactions</h3>\n']
 
