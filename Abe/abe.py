@@ -1198,7 +1198,7 @@ class Abe:
         if util.possible_address(q):found += abe.search_address(q)
         elif ADDR_PREFIX_RE.match(q):found += abe.search_address_prefix(q)
         if is_hash_prefix(q):       found += abe.search_hash_prefix(q)
-        found += abe.search_general(q)
+        #found += abe.search_general(q)
         abe.show_search_results(page, found)
 
     def show_search_results(abe, page, found):
