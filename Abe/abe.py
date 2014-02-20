@@ -1951,7 +1951,10 @@ class Abe:
 
     def serve_static(abe, path, start_response):
         slen = len(abe.static_path)
+        print path[:slen]
+        print abe.static_path
         if path[:slen] != abe.static_path:
+            print "HERE"
             raise PageNotFound()
         path = path[slen:]
         try:
