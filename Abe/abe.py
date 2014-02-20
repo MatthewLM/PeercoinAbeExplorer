@@ -1217,12 +1217,12 @@ class Abe:
             raise Redirect()
 
         body = page['body']
-        body += ['<h3>Search Results</h3>\n<ul>\n']
+        body += ['<article class="module width_half centerHalf"><header><h3>SEARCH RESULTS</h3></header><div class="module_content">\n<ul>\n']
         for result in found:
             body += [
                 '<li><a href="', page['dotdot'], escape(result['uri']), '">',
                 escape(result['name']), '</a></li>\n']
-        body += ['</ul>\n']
+        body += ['</ul></div></article>\n']
 
     def search_number(abe, n):
         def process(row):
