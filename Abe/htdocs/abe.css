@@ -16,3 +16,15 @@ table {
 .shortlink {
     font-size: smaller;
 }
+#footer{
+    text-align: center;
+    margin-bottom: 15px;
+}
+#searchBar{
+    width: 90%;
+    left: 5%;
+    position: relative;
+    height: 15px;
+    border-radius: 10px;
+    padding-left: 10px;
+}

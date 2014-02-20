@@ -69,16 +69,18 @@ DEFAULT_TEMPLATE = """
 </head>
 <body>
     %(body)s
-    <p><a href="%(dotdot)sq">API</a> (machine-readable pages)</p>
-    <p style="font-size: smaller">
-        <span style="font-style: italic">
-            Powered by <a href="%(ABE_URL)s">%(APPNAME)s</a>
-        </span>
-        %(download)s
-        Tips appreciated!
-        <a href="http://blockchain.info/address/">BTC</a>
-        <a href="%(dotdot)saddress/">CCC</a>
-    </p>
+    <div id="footer">
+        <p><a href="%(dotdot)sq">API</a> (machine-readable pages)</p>
+        <p style="font-size: smaller">
+            <span style="font-style: italic">
+                Powered by <a href="%(ABE_URL)s">%(APPNAME)s</a>
+            </span>
+            %(download)s
+            Tips appreciated!
+            <a href="http://blockchain.info/address/">BTC</a>
+            <a href="%(dotdot)saddress/">CCC</a>
+        </p>
+    </div>
 </body>
 </html>
 """
@@ -458,7 +460,11 @@ class Abe:
 
         extra = False
         #extra = True
-        body += ['<p>', nav, '</p>\n',
+        body += [
+                 '<article class="module width_half centerHalf">'
+                 '<header><h3>Blocks</h3></header>'
+                 '<div class="module_content">'
+                 '<p>', nav, '</p>\n',
                  '<table><tr><th>Block</th><th>Approx. Time</th>',
                  '<th>Transactions</th><th>Value Out</th>',
                  '<th>Difficulty</th><th>Outstanding</th>',
@@ -506,7 +512,7 @@ class Abe:
                  '</td><td>', '%8g' % total_ss] if extra else '',
                 '</td></tr>\n']
 
-        body += ['</table>\n<p>', nav, '</p>\n']
+        body += ['</table>\n<p>', nav, '</p></div></article>\n']
 
     def _show_block(abe, where, bind, page, dotdotblock, chain):
         address_version = ('\0' if chain is None
@@ -1167,15 +1173,12 @@ class Abe:
             '<article class="module width_half centerHalf">'
             '<header><h3>Search</h3></header>'
             '<div class="module_content">'
-            '<p>Search by address, block number or hash, transaction or'
-            ' public key hash:</p>\n'
-            '<form action="', page['dotdot'], 'search"><p>\n'
-            '<input name="q" size="64" value="', escape(q), '" />'
-            '<button type="submit">Search</button>\n'
-            '<br />Address or hash search requires at least the first '
+            '<form action="', page['dotdot'], 'search">\n'
+            '<input id="serachBar" name="q" placeholder="Search by address, block number or hash, transaction or'
+            ' public key hash" value="', escape(q), '" />'
+            '</form>\n'
             '</div>'
-            '</article>',
-            HASH_PREFIX_MIN, ' characters.</p></form>\n']
+            '</article>']
 
     def handle_search(abe, page):
         page['title'] = 'Search'
