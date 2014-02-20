@@ -665,8 +665,6 @@ class Abe:
                           escape(chain.name), '?hi=', height, '">',
                           escape(chain.name), '</a> ', height]
 
-        body += abe.short_link(page, '/b/' + block_shortlink(block_hash))
-
         body += ['<article class="module width_3_quarter center3Quart"><header><h3>BLOCK INFORMATION</h3></header><div class="module_content">']
         if is_stake_chain:
             body += [
@@ -914,8 +912,7 @@ class Abe:
         value_out = sum_values(out_rows)
         is_coinbase = None
 
-        body += abe.short_link(page, 't/' + hexb58(tx_hash[:14]))
-        body += ['<p>Hash: ', tx_hash, '<br />\n']
+        body += ['<article class="module width_3_quarter center3Quart"><header><h3>TRANSACTION INFORMATION</h3></header><div class="module_content"><strong>Hash:</strong> ', tx_hash, '<br />\n']
         chain = None
         for row in block_rows:
             (name, in_longest, nTime, height, blk_hash, tx_pos) = (
@@ -929,7 +926,7 @@ class Abe:
                 abe.log.warning('Transaction ' + tx_hash + ' in multiple chains: '
                              + name + ', ' + chain.name)
             body += [
-                'Appeared in <a href="../block/', blk_hash, '">',
+                '<strong>Appeared in:</strong> <a href="../block/', blk_hash, '">',
                 escape(name), ' ',
                 height if in_longest else [blk_hash[:10], '...', blk_hash[-4:]],
                 '</a> (', format_time(nTime), ')<br />\n']
@@ -939,19 +936,19 @@ class Abe:
             chain = abe.get_default_chain()
 
         body += [
-            'Number of inputs: ', len(in_rows),
+            '<strong>Number of inputs:</strong> ', len(in_rows),
             ' (<a href="#inputs">Jump to inputs</a>)<br />\n',
-            'Total in: ', format_satoshis(value_in, chain), '<br />\n',
-            'Number of outputs: ', len(out_rows),
+            '<strong>Total in:</strong> ', format_satoshis(value_in, chain), '<br />\n',
+            '<strong>Number of outputs:</strong> ', len(out_rows),
             ' (<a href="#outputs">Jump to outputs</a>)<br />\n',
-            'Total out: ', format_satoshis(value_out, chain), '<br />\n',
-            'Size: ', tx_size, ' bytes<br />\n',
-            'Fee: ', format_satoshis(0 if is_coinbase else
+            '<strong>Total out:</strong> ', format_satoshis(value_out, chain), '<br />\n',
+            '<strong>Size:</strong> ', tx_size, ' bytes<br />\n',
+            '<strong>Fee:</strong> ', format_satoshis(0 if is_coinbase else
                                      (value_in and value_out and
                                       value_in - value_out), chain),
             '<br />\n',
-            '<a href="../rawtx/', tx_hash, '">Raw transaction</a><br />\n']
-        body += ['</p>\n',
+            '<a href="../rawtx/', tx_hash, '"><strong>Raw transaction</strong></a><br />\n']
+        body += ['</div></article>\n',
                  '<a name="inputs"><h3>Inputs</h3></a>\n<table>\n',
                  '<tr><th>Index</th><th>Previous output</th><th>Amount</th>',
                  '<th>From address</th>']
@@ -2034,7 +2031,7 @@ def path_info_int(page, default):
 
 def format_time(nTime):
     import time
-    return time.strftime('%d %M %Y %H:%M:%S', time.gmtime(int(nTime)))
+    return time.strftime('%d %b %Y %H:%M:%S', time.gmtime(int(nTime)))
 
 def format_satoshis(satoshis, chain):
     decimals = DEFAULT_DECIMALS if chain.decimals is None else chain.decimals
