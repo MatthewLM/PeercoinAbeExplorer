@@ -231,6 +231,7 @@ class Abe:
         handler = abe.get_handler(cmd)
 
         tvars = abe.template_vars.copy()
+        print tvars
 
         try:
             if handler is None:
@@ -251,7 +252,7 @@ class Abe:
             page["body"] = ['<p class="error">Sorry, ', env['SCRIPT_NAME'],
                             env['PATH_INFO'],
                             ' does not exist on this server.</p>']
-        except NoSuchChainError, e:
+        except NoSuchChainError:
             page['body'] += [
                 '<p class="error">'
                 'Sorry, I don\'t know about that chain!</p>\n']
