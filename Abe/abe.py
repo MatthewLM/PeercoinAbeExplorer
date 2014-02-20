@@ -230,6 +230,8 @@ class Abe:
         cmd = wsgiref.util.shift_path_info(env)
         handler = abe.get_handler(cmd)
 
+        tvars = abe.template_vars.copy()
+
         try:
             if handler is None:
                 return abe.serve_static(cmd + env['PATH_INFO'], start_response)
@@ -240,7 +242,6 @@ class Abe:
                 # cron job.
                 abe.store.catch_up()
 
-            tvars = abe.template_vars.copy()
             tvars['dotdot'] = page['dotdot']
             page['template_vars'] = tvars
 
