@@ -435,19 +435,12 @@ class Abe:
             hi = int(rows[0][1])
         basename = os.path.basename(page['env']['PATH_INFO'])
 
-        nav = ['<a href="',
+        nav = ['<p><a href="',
                basename, '?count=', str(count), '">&lt;&lt;</a>']
         nav += [' <a href="', basename, '?hi=', str(hi + count),
-                 '&amp;count=', str(count), '">&lt;</a>']
-        nav += [' ', '&gt;']
-        if hi >= count:
-            nav[-1] = ['<a href="', basename, '?hi=', str(hi - count),
-                        '&amp;count=', str(count), '">', nav[-1], '</a>']
-        nav += [' ', '&gt;&gt;']
-        if hi != count - 1:
-            nav[-1] = ['<a href="', basename, '?hi=', str(count - 1),
-                        '&amp;count=', str(count), '">', nav[-1], '</a>']
-        for c in (20, 50, 100, 500, 2016):
+                 '&amp;count=', str(count), '">&lt;</a></p><p>']
+                 
+        for c in (20, 50, 100, 500, 1000):
             nav += [' ']
             if c != count:
                 nav += ['<a href="', basename, '?count=', str(c)]
@@ -458,16 +451,26 @@ class Abe:
             if c != count:
                 nav += ['</a>']
 
-        nav += [' <a href="', page['dotdot'], '">Search</a>']
-
+        nav += [' <a href="', page['dotdot'], '">Search</a></p><p>']         
+                 
+        nav += [' ', '&gt;']
+        if hi >= count:
+            nav[-1] = ['<a href="', basename, '?hi=', str(hi - count),
+                        '&amp;count=', str(count), '">', nav[-1], '</a>']
+        nav += [' ', '&gt;&gt;']
+        if hi != count - 1:
+            nav[-1] = ['<a href="', basename, '?hi=', str(count - 1),
+                        '&amp;count=', str(count), '">', nav[-1], '</a>']
+        nav += ['</p>']
+        
         extra = False
         #extra = True
         body += [
-                 '<article class="width_3_quarter center3Quart">'
+                 '<article class="module width_full">'
                  '<header><h3>BLOCKS</h3></header>'
-                 '<div class="module_content">'
-                 '<p>', nav, '</p>\n',
-                 '<table><tr><th>Block</th><th>Approx. Time</th>',
+                 , nav, '\n',
+                 '<table class="tablesorter" cellspacing="0"><thead>'
+                 '<tr><th>Block</th><th>Approx. Time</th>',
                  '<th>Transactions</th><th>Value Out</th>',
                  '<th>Difficulty</th><th>Outstanding</th>',
                  '<th>Average Age</th><th>Chain Age</th>',
@@ -477,7 +480,7 @@ class Abe:
                  ['<th>Satoshi-seconds</th>',
                   '<th>Total ss</th>']
                  if extra else '',
-                 '</tr>\n']
+                 '</tr></thead>\n']
         for row in rows:
             (hash, height, nTime, num_tx, nBits, value_out,
              seconds, ss, satoshis, destroyed, total_ss) = row
@@ -514,7 +517,7 @@ class Abe:
                  '</td><td>', '%8g' % total_ss] if extra else '',
                 '</td></tr>\n']
 
-        body += ['</table>\n<p>', nav, '</p></div></article>\n']
+        body += ['</table>\n', nav, '</article>\n']
 
     def _show_block(abe, where, bind, page, dotdotblock, chain):
         address_version = ('\0' if chain is None
@@ -1176,7 +1179,7 @@ class Abe:
             '<header><h3>SEARCH</h3></header>'
             '<div class="module_content">'
             '<form action="', page['dotdot'], 'search">\n'
-            '<input id="serachBar" name="q" placeholder="Search by address, block number or hash, transaction or'
+            '<input id="searchBar" name="q" placeholder="Search by address, block number or hash, transaction or'
             ' public key hash" value="', escape(q), '" />'
             '</form>\n'
             '</div>'

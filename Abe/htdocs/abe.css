@@ -1,20 +1,11 @@
 html, body{
     background-image: none;
 }
-td, th {
-    font-family: Verdana, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0 1ex;
-}
-td {
-    border-width: 1px;
-    border-style: solid;
-}
-table {
-    border-spacing: 0;
-}
 .shortlink {
     font-size: smaller;
+}
+th{
+    text-indent: 10px;
 }
 #footer{
     text-align: center;
@@ -24,8 +15,9 @@ table {
 #searchBar{
     width: 90%;
     left: 5%;
+    margin-left: -6px;
     position: relative;
-    height: 15px;
+    height: 18px;
     border-radius: 10px;
     padding-left: 10px;
 }
