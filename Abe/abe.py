@@ -435,10 +435,10 @@ class Abe:
             hi = int(rows[0][1])
         basename = os.path.basename(page['env']['PATH_INFO'])
 
-        nav = ['<p><a href="',
+        nav = ['<div id="nav"><p id="navP1"><a href="',
                basename, '?count=', str(count), '">&lt;&lt;</a>']
         nav += [' <a href="', basename, '?hi=', str(hi + count),
-                 '&amp;count=', str(count), '">&lt;</a></p><p>']
+                 '&amp;count=', str(count), '">&lt;</a></p><p id="navP2">']
                  
         for c in (20, 50, 100, 500, 1000):
             nav += [' ']
@@ -451,7 +451,7 @@ class Abe:
             if c != count:
                 nav += ['</a>']
 
-        nav += [' <a href="', page['dotdot'], '">Search</a></p><p>']         
+        nav += [' <a href="', page['dotdot'], '">Search</a></p><p id="navP3">']         
                  
         nav += [' ', '&gt;']
         if hi >= count:
@@ -461,7 +461,7 @@ class Abe:
         if hi != count - 1:
             nav[-1] = ['<a href="', basename, '?hi=', str(count - 1),
                         '&amp;count=', str(count), '">', nav[-1], '</a>']
-        nav += ['</p>']
+        nav += ['</p></div>']
         
         extra = False
         #extra = True
