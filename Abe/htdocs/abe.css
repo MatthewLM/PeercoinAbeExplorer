@@ -18,7 +18,8 @@ table {
 }
 #footer{
     text-align: center;
-    margin-bottom: 15px;
+    height: 60px;
+    clear: both;
 }
 #searchBar{
     width: 90%;

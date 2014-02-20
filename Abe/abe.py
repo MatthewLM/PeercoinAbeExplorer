@@ -68,19 +68,21 @@ DEFAULT_TEMPLATE = """
     <title>%(title)s</title>
 </head>
 <body>
+    <section id="main">
     %(body)s
-    <div id="footer">
-        <p><a href="%(dotdot)sq">API</a> (machine-readable pages)</p>
-        <p style="font-size: smaller">
-            <span style="font-style: italic">
-                Powered by <a href="%(ABE_URL)s">%(APPNAME)s</a>
-            </span>
-            %(download)s
-            Tips appreciated!
-            <a href="http://blockchain.info/address/">BTC</a>
-            <a href="%(dotdot)saddress/">CCC</a>
-        </p>
-    </div>
+        <div id="footer">
+            <p><a href="%(dotdot)sq">API</a> (machine-readable pages)</p>
+            <p style="font-size: smaller">
+                <span style="font-style: italic">
+                    Powered by <a href="%(ABE_URL)s">%(APPNAME)s</a>
+                </span>
+                %(download)s
+                Tips appreciated!
+                <a href="http://blockchain.info/address/">BTC</a>
+                <a href="%(dotdot)saddress/">CCC</a>
+            </p>
+        </div>
+    </section>
 </body>
 </html>
 """
@@ -461,8 +463,8 @@ class Abe:
         extra = False
         #extra = True
         body += [
-                 '<article class="module width_half centerHalf">'
-                 '<header><h3>Blocks</h3></header>'
+                 '<article class="width_3_quarter center3Quart">'
+                 '<header><h3>BLOCKS</h3></header>'
                  '<div class="module_content">'
                  '<p>', nav, '</p>\n',
                  '<table><tr><th>Block</th><th>Approx. Time</th>',
@@ -1171,7 +1173,7 @@ class Abe:
         q = (page['params'].get('q') or [''])[0]
         return [
             '<article class="module width_half centerHalf">'
-            '<header><h3>Search</h3></header>'
+            '<header><h3>SEARCH</h3></header>'
             '<div class="module_content">'
             '<form action="', page['dotdot'], 'search">\n'
             '<input id="serachBar" name="q" placeholder="Search by address, block number or hash, transaction or'
