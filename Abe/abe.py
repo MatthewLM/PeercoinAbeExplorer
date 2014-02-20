@@ -1127,16 +1127,16 @@ class Abe:
         else:
             link = address[0 : abe.shortlink_type]
 
-        body += ['<article class="module width_3_quarter center3Quart"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">Balance: '] + format_amounts(balance, True)
+        body += ['<article class="module width_3_quarter center3Quart"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content"><strong>Balance:</strong> '] + format_amounts(balance, True)
 
         for chain in chains:
             balance[chain.id] = 0  # Reset for history traversal.
 
         body += ['<br />\n',
-                 'Transactions in: ', count[0], '<br />\n',
-                 'Received: ', format_amounts(received, False), '<br />\n',
-                 'Transactions out: ', count[1], '<br />\n',
-                 'Sent: ', format_amounts(sent, False), '<br />\n']
+                 '<strong>Transactions in:</strong> ', count[0], '<br />\n',
+                 '<strong>Received:</strong> ', format_amounts(received, False), '<br />\n',
+                 '<strong>Transactions out:</strong> ', count[1], '<br />\n',
+                 '<strong>Sent:</strong> ', format_amounts(sent, False), '<br />\n']
 
         body += ['</div></article><article class="module width_3_quarter center3Quart">\n'
                  '<header><h3>Transactions</h3></header>\n'
