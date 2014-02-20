@@ -23,7 +23,22 @@ th{
 }
 #nav{
     position: relative;
+    margin: 0 20px 2px 20px;
+    font-weight: bold;
+    height: 40px;
 }
 #nav p{
-    
+    position: absolute;
+    top: 0;
+}
+#navP2{
+    text-align: center;
+    width: 200px;
+    left: calc(50% - 100px);
+}
+#navP1, #navP3{
+    width: 40px;
+}
+#navP3{
+    right: 0;
 }
