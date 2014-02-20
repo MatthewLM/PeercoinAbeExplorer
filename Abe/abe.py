@@ -236,7 +236,7 @@ class Abe:
 
         try:
             if handler is None:
-                return abe.serve_static(cmd + env['PATH_INFO'], start_response)
+                return abe.serve_static(abe.static_path + cmd + env['PATH_INFO'], start_response)
 
             if (not abe.args.no_load):
                 # Always be up-to-date, even if we means having to wait
