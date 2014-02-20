@@ -236,7 +236,7 @@ class Abe:
 
         try:
             if handler is None:
-                return abe.serve_static(abe.static_path + cmd + env['PATH_INFO'], start_response)
+                return abe.serve_static(cmd + env['PATH_INFO'], start_response)
 
             if (not abe.args.no_load):
                 # Always be up-to-date, even if we means having to wait
@@ -1960,7 +1960,6 @@ class Abe:
             # if-modified-since.  Or just hope serious users will map
             # our htdocs as static in their web server.
             # XXX is "+ '/' + path" adequate for non-POSIX systems?
-            print abe.htdocs + '/' + path
             found = open(abe.htdocs + '/' + path, "rb")
             import mimetypes
             type, enc = mimetypes.guess_type(path)
