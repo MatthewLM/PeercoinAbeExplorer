@@ -1951,10 +1951,7 @@ class Abe:
 
     def serve_static(abe, path, start_response):
         slen = len(abe.static_path)
-        print path[:slen]
-        print abe.static_path
         if path[:slen] != abe.static_path:
-            print "HERE"
             raise PageNotFound()
         path = path[slen:]
         try:
@@ -1963,6 +1960,7 @@ class Abe:
             # if-modified-since.  Or just hope serious users will map
             # our htdocs as static in their web server.
             # XXX is "+ '/' + path" adequate for non-POSIX systems?
+            print abe.htdocs + '/' + path
             found = open(abe.htdocs + '/' + path, "rb")
             import mimetypes
             type, enc = mimetypes.guess_type(path)
