@@ -62,8 +62,8 @@ DEFAULT_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css"
-     href="%(dotdot)s%(STATIC_PATH)sabe.css" />
+    <link rel="stylesheet" type="text/css" href="%(dotdot)s/../site_assets/mpos/css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="%(dotdot)s%(STATIC_PATH)sabe.css" />
     <link rel="shortcut icon" href="%(dotdot)s%(STATIC_PATH)sfavicon.ico" />
     <title>%(title)s</title>
 </head>
@@ -1168,7 +1168,7 @@ class Abe:
         q = (page['params'].get('q') or [''])[0]
         return [
             '<p>Search by address, block number or hash, transaction or'
-            ' public key hash, or chain name:</p>\n'
+            ' public key hash:</p>\n'
             '<form action="', page['dotdot'], 'search"><p>\n'
             '<input name="q" size="64" value="', escape(q), '" />'
             '<button type="submit">Search</button>\n'
