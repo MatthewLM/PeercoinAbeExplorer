@@ -960,7 +960,7 @@ class Abe:
                         'Generation' if is_coinbase else 'Unknown')
         body += ['</table></article>\n',
                  '<article class="module width_3_quarter center3Quart"><a name="outputs"><header><h3>Outputs</h3></header></a>\n<table class="tablesorter" cellspacing="0">\n',
-                 '<thead><tr><th>Index</th><th>Redeemed at input</th><th>Amount</th>',
+                 '<thead><tr><th>Index</th><th>Redeem</th><th>Amount</th>',
                  '<th>To address</th><th>ScriptPubKey</th></tr></thead>\n']
         for row in out_rows:
             row_to_html(row, 'o', 'i', 'Not yet redeemed')
@@ -1126,9 +1126,8 @@ class Abe:
                 link = address
         else:
             link = address[0 : abe.shortlink_type]
-        body += abe.short_link(page, 'a/' + link)
 
-        body += ['<p>Balance: '] + format_amounts(balance, True)
+        body += ['<article class="module width_3_quarter center3Quart"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">Balance: '] + format_amounts(balance, True)
 
         for chain in chains:
             balance[chain.id] = 0  # Reset for history traversal.
@@ -1139,11 +1138,11 @@ class Abe:
                  'Transactions out: ', count[1], '<br />\n',
                  'Sent: ', format_amounts(sent, False), '<br />\n']
 
-        body += ['</p>\n'
-                 '<h3>Transactions</h3>\n'
-                 '<table>\n<tr><th>Transaction</th><th>Block</th>'
+        body += ['</div></article><article class="module width_3_quarter center3Quart">\n'
+                 '<header><h3>Transactions</h3></header>\n'
+                 '<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
                  '<th>Approx. Time</th><th>Amount</th><th>Balance</th>'
-                 '<th>Currency</th></tr>\n']
+                 '<th>Currency</th></tr></thead>\n']
 
         for elt in txpoints:
             chain = abe.store.get_chain_by_id(elt['chain_id'])
@@ -1162,7 +1161,7 @@ class Abe:
                      format_satoshis(balance[elt['chain_id']], chain),
                      '</td><td>', escape(chain.code3),
                      '</td></tr>\n']
-        body += ['</table>\n']
+        body += ['</table></article>\n']
 
     def search_form(abe, page):
         q = (page['params'].get('q') or [''])[0]
