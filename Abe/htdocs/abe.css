@@ -48,3 +48,6 @@ th{
 strong{
     padding-right: 3px;
 }
+.module_content{
+    line-height: 1.5em;
+}

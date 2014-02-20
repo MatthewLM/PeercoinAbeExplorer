@@ -949,23 +949,23 @@ class Abe:
             '<br />\n',
             '<a href="../rawtx/', tx_hash, '"><strong>Raw transaction</strong></a><br />\n']
         body += ['</div></article>\n',
-                 '<a name="inputs"><h3>Inputs</h3></a>\n<table>\n',
-                 '<tr><th>Index</th><th>Previous output</th><th>Amount</th>',
+                 '<article class="module width_3_quarter center3Quart"><a name="inputs"><header><h3>Inputs</h3></header></a>\n<table class="tablesorter" cellspacing="0">\n',
+                 '<thead><tr><th>Index</th><th>Previous output</th><th>Amount</th>',
                  '<th>From address</th>']
         if abe.store.keep_scriptsig:
             body += ['<th>ScriptSig</th>']
-        body += ['</tr>\n']
+        body += ['</tr></thead>\n']
         for row in in_rows:
             row_to_html(row, 'i', 'o',
                         'Generation' if is_coinbase else 'Unknown')
-        body += ['</table>\n',
-                 '<a name="outputs"><h3>Outputs</h3></a>\n<table>\n',
-                 '<tr><th>Index</th><th>Redeemed at input</th><th>Amount</th>',
-                 '<th>To address</th><th>ScriptPubKey</th></tr>\n']
+        body += ['</table></article>\n',
+                 '<article class="module width_3_quarter center3Quart"><a name="outputs"><header><h3>Outputs</h3></header></a>\n<table class="tablesorter" cellspacing="0">\n',
+                 '<thead><tr><th>Index</th><th>Redeemed at input</th><th>Amount</th>',
+                 '<th>To address</th><th>ScriptPubKey</th></tr></thead>\n']
         for row in out_rows:
             row_to_html(row, 'o', 'i', 'Not yet redeemed')
 
-        body += ['</table>\n']
+        body += ['</table></article>\n']
 
     def handle_rawtx(abe, page):
         abe.do_raw(page, abe.do_rawtx)
@@ -2031,7 +2031,7 @@ def path_info_int(page, default):
 
 def format_time(nTime):
     import time
-    return time.strftime('%d %b %Y %H:%M:%S', time.gmtime(int(nTime)))
+    return time.strftime('%d %b %Y, %H:%M:%S', time.gmtime(int(nTime)))
 
 def format_satoshis(satoshis, chain):
     decimals = DEFAULT_DECIMALS if chain.decimals is None else chain.decimals
