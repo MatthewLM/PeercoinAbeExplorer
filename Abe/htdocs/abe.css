@@ -45,3 +45,6 @@ th{
 #navP1 a, #navP3 a{
     padding: 0 4px;
 }
+strong{
+    padding-right: 3px;
+}

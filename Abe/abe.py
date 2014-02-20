@@ -667,7 +667,7 @@ class Abe:
 
         body += abe.short_link(page, '/b/' + block_shortlink(block_hash))
 
-        body += ['<article class="module width_half centerHalf"><header><h3>BLOCK INFORMATION</h3></header><div class="module_content">']
+        body += ['<article class="module width_3_quarter center3Quart"><header><h3>BLOCK INFORMATION</h3></header><div class="module_content">']
         if is_stake_chain:
             body += [
                 'Proof of Stake' if is_proof_of_stake else 'Proof of Work',
@@ -693,7 +693,7 @@ class Abe:
             '<strong>Time:</strong> ', nTime, ' (', format_time(nTime), ')<br />\n',
             '<strong>Difficulty:</strong> ', format_difficulty(util.calculate_difficulty(nBits)),
 
-            '<strong>Nonce:</strong> ', nNonce, '<br />\n',
+            '<br /><strong>Nonce:</strong> ', nNonce, '<br />\n',
             '<strong>Transactions:</strong> ', num_tx, '<br />\n',
             '<strong>Value out:</strong> ', format_satoshis(value_out, chain), '<br />\n',
             '<strong>Transaction Fees:</strong> ', format_satoshis(block_fees, chain), '<br />\n',
@@ -716,11 +716,11 @@ class Abe:
 
             '</div></article>\n']
 
-        body += ['<h3>Transactions</h3>\n']
+        body += ['<article class="module width_3_quarter center3Quart"><header><h3>Transactions</h3></header>\n']
 
-        body += ['<table><tr><th>Transaction</th><th>Fee</th>'
+        body += ['<table class="tablesorter" cellspacing="0"><thead><tr><th>Transaction</th><th>Fee</th>'
                  '<th>Size (kB)</th><th>From (amount)</th><th>To (amount)</th>'
-                 '</tr>\n']
+                 '</tr></thead>\n']
         for tx_id in tx_ids:
             tx = txs[tx_id]
             body += ['<tr><td><a href="../tx/' + tx['hash'] + '">',
@@ -756,7 +756,7 @@ class Abe:
                     address_version, txout['pubkey_hash'], page['dotdot'])
                 body += [': ', format_satoshis(txout['value'], chain), '<br />']
             body += ['</td></tr>\n']
-        body += '</table>\n'
+        body += '</table></article>\n'
 
     def handle_block(abe, page):
         block_hash = wsgiref.util.shift_path_info(page['env'])
@@ -2034,7 +2034,7 @@ def path_info_int(page, default):
 
 def format_time(nTime):
     import time
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(nTime)))
+    return time.strftime('%d %M %Y %H:%M:%S', time.gmtime(int(nTime)))
 
 def format_satoshis(satoshis, chain):
     decimals = DEFAULT_DECIMALS if chain.decimals is None else chain.decimals
