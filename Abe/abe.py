@@ -231,7 +231,8 @@ class Abe:
         handler = abe.get_handler(cmd)
 
         tvars = abe.template_vars.copy()
-        print tvars
+        tvars['dotdot'] = page['dotdot']
+        page['template_vars'] = tvars
 
         try:
             if handler is None:
@@ -242,9 +243,6 @@ class Abe:
                 # for a response!  XXX Could use threads, timers, or a
                 # cron job.
                 abe.store.catch_up()
-
-            tvars['dotdot'] = page['dotdot']
-            page['template_vars'] = tvars
 
             handler(page)
         except PageNotFound:
