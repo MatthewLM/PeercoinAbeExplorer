@@ -2119,7 +2119,7 @@ def hash_to_address_link(version, hash, dotdot):
     addr = util.hash_to_address(version, hash)
     addrTxt = addr
     if addr in addrToName:
-        addrTxt = addrToName[addr]
+        addrTxt = addrToName[addr][0]
     return ['<a href="', dotdot, 'address/', addr, '">', addrTxt, '</a>']
 
 def decode_script(script):
