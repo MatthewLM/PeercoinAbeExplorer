@@ -1046,49 +1046,77 @@ class Abe:
         if max_rows >= 0 and len(in_rows) > max_rows:
             too_many = True
 
-        out_rows = abe.store.selectall("""
-            SELECT
-                b.block_nTime,
-                cc.chain_id,
-                b.block_height,
-                0,
-                b.block_hash,
-                tx.tx_hash,
-                txout.txout_pos,
-                txout.txout_value
-              FROM chain_candidate cc
-              JOIN block b ON (b.block_id = cc.block_id)
-              JOIN block_tx ON (block_tx.block_id = b.block_id)
-              JOIN tx ON (tx.tx_id = block_tx.tx_id)
-              JOIN txout ON (txout.tx_id = tx.tx_id)
-              JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
-             WHERE pubkey.pubkey_hash = ?
-               AND cc.in_longest = 1""" + ("" if max_rows < 0 else """
-             LIMIT ?"""),
-                      (dbhash, max_rows + 1)
-                      if max_rows >= 0 else
-                      (dbhash,))
-        if max_rows >= 0 and len(out_rows) > max_rows:
-            too_many = True
+        if not too_many:
+            out_rows = abe.store.selectall("""
+                SELECT
+                    b.block_nTime,
+                    cc.chain_id,
+                    b.block_height,
+                    0,
+                    b.block_hash,
+                    tx.tx_hash,
+                    txout.txout_pos,
+                    txout.txout_value
+                  FROM chain_candidate cc
+                  JOIN block b ON (b.block_id = cc.block_id)
+                  JOIN block_tx ON (block_tx.block_id = b.block_id)
+                  JOIN tx ON (tx.tx_id = block_tx.tx_id)
+                  JOIN txout ON (txout.tx_id = tx.tx_id)
+                  JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
+                 WHERE pubkey.pubkey_hash = ?
+                   AND cc.in_longest = 1""" + ("" if max_rows < 0 else """
+                 LIMIT ?"""),
+                          (dbhash, max_rows + 1)
+                          if max_rows >= 0 else
+                          (dbhash,))
+            if max_rows >= 0 and len(out_rows) > max_rows:
+                too_many = True
 
-        rows = []
-        rows += in_rows
-        rows += out_rows
-        rows.sort()
-        for row in rows:
-            nTime, chain_id, height, is_in, blk_hash, tx_hash, pos, value = row
-            txpoint = {
-                    "nTime":    int(nTime),
-                    "chain_id": int(chain_id),
-                    "height":   int(height),
-                    "is_in":    int(is_in),
-                    "blk_hash": abe.store.hashout_hex(blk_hash),
-                    "tx_hash":  abe.store.hashout_hex(tx_hash),
-                    "pos":      int(pos),
-                    "value":    int(value),
-                    }
-            adj_balance(txpoint)
-            txpoints.append(txpoint)
+        if too_many:
+            # Get counts, not transactions
+            row = abe.store.selectall("""
+                SELECT
+                    SUM(txout.txout_value),
+                    COUNT(*),
+                    cc.chain_id
+                  FROM chain_candidate cc
+                  JOIN txout prevout ON (txin.txout_id = prevout.txout_id)
+                 WHERE pubkey.pubkey_hash = ?
+                   AND cc.in_longest = 1""", (dbhash,))
+            sent[row[2]] += row[0];
+            balance[row[2]] += row[0];
+            count[1] += row[1];
+            row = abe.store.selectall("""
+                SELECT
+                    SUM(-prevout.txout_value),
+                    COUNT(*),
+                    cc.chain_id
+                  FROM chain_candidate cc
+                  JOIN txout ON (txout.tx_id = tx.tx_id)
+                 WHERE pubkey.pubkey_hash = ?
+                   AND cc.in_longest = 1""", (dbhash,))
+            received[row[2]] += row[0];
+            balance[row[2]] += row[0];
+            count[0] += row[1];
+        else:
+            rows = []
+            rows += in_rows
+            rows += out_rows
+            rows.sort()
+            for row in rows:
+                nTime, chain_id, height, is_in, blk_hash, tx_hash, pos, value = row
+                txpoint = {
+                        "nTime":    int(nTime),
+                        "chain_id": int(chain_id),
+                        "height":   int(height),
+                        "is_in":    int(is_in),
+                        "blk_hash": abe.store.hashout_hex(blk_hash),
+                        "tx_hash":  abe.store.hashout_hex(tx_hash),
+                        "pos":      int(pos),
+                        "value":    int(value),
+                        }
+                adj_balance(txpoint)
+                txpoints.append(txpoint)
 
         if (not chains):
             body += ['<p>Address not seen on the network.</p>']
@@ -1136,32 +1164,32 @@ class Abe:
 
         body += ['</div></article><article class="module width_3_quarter center3Quart">\n'
                  '<header><h3>Transactions</h3></header>\n']
-        
+                 
         if too_many:
-            body += ['<p id="limitTxs"><strong>Only showing ', str(max_rows) , ' transactions.</strong></p>']
-        
-        body += ['<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
-                 '<th>Approx. Time</th><th>Amount</th><th>Balance</th>'
-                 '</tr></thead>\n']
+            body += ['<p class="limitTxs">Too many transactions to display.</p>']
+        else:
+            body += ['<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
+                     '<th>Approx. Time</th><th>Amount</th><th>Balance</th>'
+                     '</tr></thead>\n']
 
-        for elt in txpoints:
-            chain = abe.store.get_chain_by_id(elt['chain_id'])
-            balance[elt['chain_id']] += elt['value']
-            body += ['<tr><td><a href="../tx/', elt['tx_hash'],
-                     '#', 'i' if elt['is_in'] else 'o', elt['pos'],
-                     '">', elt['tx_hash'][:10], '...</a>',
-                     '</td><td><a href="../block/', elt['blk_hash'],
-                     '">', elt['height'], '</a></td><td>',
-                     format_time(elt['nTime']), '</td><td>']
-            if elt['value'] < 0:
-                body += ['<span class="negativeValue">-', format_satoshis(-elt['value'], chain), '</span>']
-            else:
-                body += [format_satoshis(elt['value'], chain)]
-            body += ['</td><td>',
-                     format_satoshis(balance[elt['chain_id']], chain),
-                     '</td>',
-                     '</tr>\n']
-        body += ['</table></article>\n']
+            for elt in txpoints:
+                chain = abe.store.get_chain_by_id(elt['chain_id'])
+                balance[elt['chain_id']] += elt['value']
+                body += ['<tr><td><a href="../tx/', elt['tx_hash'],
+                         '#', 'i' if elt['is_in'] else 'o', elt['pos'],
+                         '">', elt['tx_hash'][:10], '...</a>',
+                         '</td><td><a href="../block/', elt['blk_hash'],
+                         '">', elt['height'], '</a></td><td>',
+                         format_time(elt['nTime']), '</td><td>']
+                if elt['value'] < 0:
+                    body += ['<span class="negativeValue">-', format_satoshis(-elt['value'], chain), '</span>']
+                else:
+                    body += [format_satoshis(elt['value'], chain)]
+                body += ['</td><td>',
+                         format_satoshis(balance[elt['chain_id']], chain),
+                         '</td>',
+                         '</tr>\n']
+            body += ['</table></article>\n']
 
     def search_form(abe, page):
         q = (page['params'].get('q') or [''])[0]
