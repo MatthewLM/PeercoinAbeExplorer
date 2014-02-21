@@ -73,7 +73,7 @@ DEFAULT_TEMPLATE = """
     <link rel="shortcut icon" href="%(dotdot)s%(STATIC_PATH)sfavicon.ico" />
     <title>%(title)s</title>
 </head>
-<body>
+<body onload="parent.explorerLoaded()">
     <section id="main">
     %(body)s
         <div id="footer">
