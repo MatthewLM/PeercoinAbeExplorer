@@ -63,3 +63,6 @@ strong{
 .negativeValue{
     color: #C00;
 }
+#limitTxs{
+    text-align: center;
+}

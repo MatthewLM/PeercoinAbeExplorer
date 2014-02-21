@@ -1046,36 +1046,30 @@ class Abe:
         if max_rows >= 0 and len(in_rows) > max_rows:
             too_many = True
 
-        if not too_many:
-            out_rows = abe.store.selectall("""
-                SELECT
-                    b.block_nTime,
-                    cc.chain_id,
-                    b.block_height,
-                    0,
-                    b.block_hash,
-                    tx.tx_hash,
-                    txout.txout_pos,
-                    txout.txout_value
-                  FROM chain_candidate cc
-                  JOIN block b ON (b.block_id = cc.block_id)
-                  JOIN block_tx ON (block_tx.block_id = b.block_id)
-                  JOIN tx ON (tx.tx_id = block_tx.tx_id)
-                  JOIN txout ON (txout.tx_id = tx.tx_id)
-                  JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
-                 WHERE pubkey.pubkey_hash = ?
-                   AND cc.in_longest = 1""" + ("" if max_rows < 0 else """
-                 LIMIT ?"""),
-                          (dbhash, max_rows + 1)
-                          if max_rows >= 0 else
-                          (dbhash,))
-            if max_rows >= 0 and len(out_rows) > max_rows:
-                too_many = True
-
-        if too_many:
-            body += ["<p>I'm sorry, this address has too many records"
-                     " to display.</p>"]
-            return
+        out_rows = abe.store.selectall("""
+            SELECT
+                b.block_nTime,
+                cc.chain_id,
+                b.block_height,
+                0,
+                b.block_hash,
+                tx.tx_hash,
+                txout.txout_pos,
+                txout.txout_value
+              FROM chain_candidate cc
+              JOIN block b ON (b.block_id = cc.block_id)
+              JOIN block_tx ON (block_tx.block_id = b.block_id)
+              JOIN tx ON (tx.tx_id = block_tx.tx_id)
+              JOIN txout ON (txout.tx_id = tx.tx_id)
+              JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
+             WHERE pubkey.pubkey_hash = ?
+               AND cc.in_longest = 1""" + ("" if max_rows < 0 else """
+             LIMIT ?"""),
+                      (dbhash, max_rows + 1)
+                      if max_rows >= 0 else
+                      (dbhash,))
+        if max_rows >= 0 and len(out_rows) > max_rows:
+            too_many = True
 
         rows = []
         rows += in_rows
@@ -1129,7 +1123,7 @@ class Abe:
 
         body += ['<article class="module width_half centerHalf"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">']
         body += ['<strong>Address:</strong> ', address]
-        body += ['<strong>Balance:</strong> '] + format_amounts(balance, True)
+        body += ['<br /><strong>Balance:</strong> '] + format_amounts(balance, True)
 
         for chain in chains:
             balance[chain.id] = 0  # Reset for history traversal.
@@ -1141,8 +1135,12 @@ class Abe:
                  '<strong>Sent:</strong> ', format_amounts(sent, False), '<br />\n']
 
         body += ['</div></article><article class="module width_3_quarter center3Quart">\n'
-                 '<header><h3>Transactions</h3></header>\n'
-                 '<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
+                 '<header><h3>Transactions</h3></header>\n']
+        
+        if too_many:
+            body += ['<p id="limitTxs"><strong>Only showing ', str(max_rows) , ' transactions.</strong></p>']
+        
+        body += ['<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
                  '<th>Approx. Time</th><th>Amount</th><th>Balance</th>'
                  '</tr></thead>\n']
 
