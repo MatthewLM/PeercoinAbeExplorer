@@ -1087,6 +1087,8 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))
+            print row;
+            print sent
             sent[row[2]] = row[0];
             balance[row[2]] = row[0];
             count[1] = row[1];
