@@ -1086,9 +1086,7 @@ class Abe:
                   JOIN txout ON (txout.tx_id = tx.tx_id)
                   JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
-                   AND cc.in_longest = 1""", (dbhash,))
-            print row;
-            print sent
+                   AND cc.in_longest = 1""", (dbhash,))[0]
             sent[row[2]] = row[0];
             balance[row[2]] = row[0];
             count[1] = row[1];
@@ -1105,7 +1103,7 @@ class Abe:
                   JOIN txout prevout ON (txin.txout_id = prevout.txout_id)
                   JOIN pubkey ON (pubkey.pubkey_id = prevout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
-                   AND cc.in_longest = 1""", (dbhash,))
+                   AND cc.in_longest = 1""", (dbhash,))[0]
             received[row[2]] = row[0];
             balance[row[2]] = row[0];
             count[0] = row[1];
