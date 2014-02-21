@@ -1087,9 +1087,9 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))
-            sent[row[2]] += row[0];
-            balance[row[2]] += row[0];
-            count[1] += row[1];
+            sent[row[2]] = row[0];
+            balance[row[2]] = row[0];
+            count[1] = row[1];
             row = abe.store.selectall("""
                 SELECT
                     SUM(-prevout.txout_value),
@@ -1104,9 +1104,9 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = prevout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))
-            received[row[2]] += row[0];
-            balance[row[2]] += row[0];
-            count[0] += row[1];
+            received[row[2]] = row[0];
+            balance[row[2]] = row[0];
+            count[0] = row[1];
         else:
             rows = []
             rows += in_rows
