@@ -1080,7 +1080,11 @@ class Abe:
                     COUNT(*),
                     cc.chain_id
                   FROM chain_candidate cc
-                  JOIN txout prevout ON (txin.txout_id = prevout.txout_id)
+                  JOIN block b ON (b.block_id = cc.block_id)
+                  JOIN block_tx ON (block_tx.block_id = b.block_id)
+                  JOIN tx ON (tx.tx_id = block_tx.tx_id)
+                  JOIN txout ON (txout.tx_id = tx.tx_id)
+                  JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))
             sent[row[2]] += row[0];
@@ -1092,7 +1096,12 @@ class Abe:
                     COUNT(*),
                     cc.chain_id
                   FROM chain_candidate cc
-                  JOIN txout ON (txout.tx_id = tx.tx_id)
+                  JOIN block b ON (b.block_id = cc.block_id)
+                  JOIN block_tx ON (block_tx.block_id = b.block_id)
+                  JOIN tx ON (tx.tx_id = block_tx.tx_id)
+                  JOIN txin ON (txin.tx_id = tx.tx_id)
+                  JOIN txout prevout ON (txin.txout_id = prevout.txout_id)
+                  JOIN pubkey ON (pubkey.pubkey_id = prevout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))
             received[row[2]] += row[0];
