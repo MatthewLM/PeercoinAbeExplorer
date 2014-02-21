@@ -55,7 +55,7 @@ EPOCH1970 = calendar.timegm(TIME1970)
 
 addrToName = {
     "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to.", None],
-    "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", "Doantions for Isaac Yonemoto's research project into the potential cancer treatment named 9DS.", "http://www.indysci.org/"],
+    "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", "Donations for Isaac Yonemoto's research project into the potential cancer treatment named 9DS.", "http://www.indysci.org/"],
     "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", "Donations to raise money for Advocate Hope Children's Charities.", "http://www.cryptoforkids.com/"]
 }
 
