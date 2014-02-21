@@ -1087,14 +1087,14 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = txout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))[0]
-            sent[row[2]] = row[0];
-            balance[row[2]] = row[0];
+            chain_id = row[2]
+            sent[chain_id] = row[0];
+            balance[chain_id] = row[0];
             count[1] = row[1];
             row = abe.store.selectall("""
                 SELECT
                     SUM(-prevout.txout_value),
-                    COUNT(*),
-                    cc.chain_id
+                    COUNT(*)
                   FROM chain_candidate cc
                   JOIN block b ON (b.block_id = cc.block_id)
                   JOIN block_tx ON (block_tx.block_id = b.block_id)
@@ -1104,9 +1104,12 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = prevout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))[0]
-            received[row[2]] = row[0];
-            balance[row[2]] = row[0];
+            received[chain_id] = row[0];
+            balance[chain_id] = row[0];
             count[0] = row[1];
+            # Add chain
+            chain = abe.store.get_chain_by_id(chain_id)
+            chains.append(chain)
         else:
             rows = []
             rows += in_rows
