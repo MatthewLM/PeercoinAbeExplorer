@@ -7,6 +7,9 @@ html, body{
 th, td{
     padding-left: 10px;
 }
+#main{
+    width: 100%;
+}
 #footer{
     text-align: center;
     height: 60px;
@@ -50,4 +53,13 @@ strong{
 }
 .module_content{
     line-height: 1.5em;
+}
+.width_3_quarter {
+    width: 75%;
+}
+.center3Quart{
+    margin-left: 12%;
+}
+.negativeValue{
+    color: #C00;
 }

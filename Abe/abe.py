@@ -451,7 +451,7 @@ class Abe:
             if c != count:
                 nav += ['</a>']
 
-        nav += [' <a href="', page['dotdot'], '">Search</a></p><p id="navP3">']         
+        nav += ['</p><p id="navP3">']         
                  
         nav += [' ', '&gt;']
         if hi >= count:
@@ -1142,7 +1142,7 @@ class Abe:
                  '<header><h3>Transactions</h3></header>\n'
                  '<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
                  '<th>Approx. Time</th><th>Amount</th><th>Balance</th>'
-                 '<th>Currency</th></tr></thead>\n']
+                 '</tr></thead>\n']
 
         for elt in txpoints:
             chain = abe.store.get_chain_by_id(elt['chain_id'])
@@ -1154,13 +1154,13 @@ class Abe:
                      '">', elt['height'], '</a></td><td>',
                      format_time(elt['nTime']), '</td><td>']
             if elt['value'] < 0:
-                body += ['(', format_satoshis(-elt['value'], chain), ')']
+                body += ['<span class="negativeValue">(', format_satoshis(-elt['value'], chain), ')</span>']
             else:
                 body += [format_satoshis(elt['value'], chain)]
             body += ['</td><td>',
                      format_satoshis(balance[elt['chain_id']], chain),
-                     '</td><td>', escape(chain.code3),
-                     '</td></tr>\n']
+                     '</td>',
+                     '</tr>\n']
         body += ['</table></article>\n']
 
     def search_form(abe, page):
