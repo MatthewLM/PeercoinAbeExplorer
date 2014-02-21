@@ -2229,7 +2229,6 @@ store._ddl['txout_approx'],
                    store.intin(tx['lockTime']), tx['size']))
 
         # Import transaction outputs.
-        used_keys = []
         tx['value_out'] = 0
         tx['value_destroyed'] = 0
         for pos in xrange(len(tx['txOut'])):
@@ -2258,22 +2257,8 @@ store._ddl['txout_approx'],
                           (txout_id, txin_id))
                 store.sql("DELETE FROM unlinked_txin WHERE txin_id = ?",
                           (txin_id,))
-            
-            # Update out totals
-            
-            store.sql("""
-                UPDATE pubkey SET outsum = outsum + ? WHERE pubkey_id = ? 
-            """, (txout['value'],pubkey_id)
-            )
-            
-            if pubkey_id not in used_keys:
-                store.sql("""
-                    UPDATE pubkey SET outcount = outcount + 1 WHERE pubkey_id = ? 
-                """, (pubkey_id))
-                used_keys.append(pubkey_id)
 
         # Import transaction inputs.
-        used_keys = []
         tx['value_in'] = 0
         tx['unlinked_count'] = 0
         for pos in xrange(len(tx['txIn'])):
@@ -2283,25 +2268,12 @@ store._ddl['txout_approx'],
             if is_coinbase:
                 txout_id = None
             else:
-                txout_id, value, pubkey_id = store.lookup_txout(
+                txout_id, value = store.lookup_txout(
                     txin['prevout_hash'], txin['prevout_n'])
                 if value is None:
                     tx['value_in'] = None
                 elif tx['value_in'] is not None:
                     tx['value_in'] += value
-                    
-                # Update in totals
-            
-                store.sql("""
-                    UPDATE pubkey SET insum = insum + ? WHERE pubkey_id = ? 
-                """, (txout['value'],pubkey_id)
-                )
-
-                if pubkey_id not in used_keys:
-                    store.sql("""
-                        UPDATE pubkey SET incount = incount + 1 WHERE pubkey_id = ? 
-                    """, (pubkey_id))
-                    used_keys.append(pubkey_id)
 
             store.sql("""
                 INSERT INTO txin (
@@ -2625,13 +2597,13 @@ store._ddl['txout_approx'],
 
     def lookup_txout(store, tx_hash, txout_pos):
         row = store.selectrow("""
-            SELECT txout.txout_id, txout.txout_value, txout.pubkey_id
+            SELECT txout.txout_id, txout.txout_value
               FROM txout, tx
              WHERE txout.tx_id = tx.tx_id
                AND tx.tx_hash = ?
                AND txout.txout_pos = ?""",
                   (store.hashin(tx_hash), txout_pos))
-        return (None, None, None) if row is None else (row[0], int(row[1]), int(row(2)))
+        return (None, None) if row is None else (row[0], int(row[1]))
 
     def script_to_pubkey_id(store, script):
         """Extract address from transaction output script."""
