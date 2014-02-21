@@ -2101,6 +2101,9 @@ def hash_to_address_link(version, hash, dotdot):
     if hash is None:
         return 'UNKNOWN'
     addr = util.hash_to_address(version, hash)
+    addrTxt = addr
+    if addr == "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE":
+        addrTxt = "Charity Donation"
     return ['<a href="', dotdot, 'address/', addr, '">', addr, '</a>']
 
 def decode_script(script):
