@@ -4,10 +4,10 @@ html, body{
 .shortlink {
     font-size: smaller;
 }
-th, td{
+th{
     padding-left: 10px;
 }
-#main{
+section#main{
     width: 100%;
 }
 #footer{

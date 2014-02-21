@@ -1127,7 +1127,9 @@ class Abe:
         else:
             link = address[0 : abe.shortlink_type]
 
-        body += ['<article class="module width_3_quarter center3Quart"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content"><strong>Balance:</strong> '] + format_amounts(balance, True)
+        body += ['<article class="module width_half centerHalf"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">']
+        body += ['<strong>Address:</strong> '] + address
+        body += ['<strong>Balance:</strong> '] + format_amounts(balance, True)
 
         for chain in chains:
             balance[chain.id] = 0  # Reset for history traversal.
@@ -1154,7 +1156,7 @@ class Abe:
                      '">', elt['height'], '</a></td><td>',
                      format_time(elt['nTime']), '</td><td>']
             if elt['value'] < 0:
-                body += ['<span class="negativeValue">(', format_satoshis(-elt['value'], chain), ')</span>']
+                body += ['<span class="negativeValue">-', format_satoshis(-elt['value'], chain), '</span>']
             else:
                 body += [format_satoshis(elt['value'], chain)]
             body += ['</td><td>',
