@@ -720,7 +720,7 @@ class Abe:
 
             '</div></article>\n']
 
-        body += ['<article class="module width_3_quarter center3Quart"><header><h3>Transactions</h3></header>\n']
+        body += ['<article class="module width_full"><header><h3>Transactions</h3></header>\n']
 
         body += ['<table class="tablesorter" cellspacing="0"><thead><tr><th>Transaction</th><th>Fee</th>'
                  '<th>Size (kB)</th><th>From (amount)</th><th>To (amount)</th>'
