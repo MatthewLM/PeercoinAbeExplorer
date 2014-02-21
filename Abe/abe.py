@@ -1128,7 +1128,7 @@ class Abe:
             link = address[0 : abe.shortlink_type]
 
         body += ['<article class="module width_half centerHalf"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">']
-        body += ['<strong>Address:</strong> '] + address
+        body += ['<strong>Address:</strong> ', address]
         body += ['<strong>Balance:</strong> '] + format_amounts(balance, True)
 
         for chain in chains:
