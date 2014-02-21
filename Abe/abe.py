@@ -1088,9 +1088,9 @@ class Abe:
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))[0]
             chain_id = row[2]
-            sent[chain_id] = row[0];
+            received[chain_id] = row[0];
             balance[chain_id] = row[0];
-            count[1] = row[1];
+            count[0] = row[1];
             row = abe.store.selectall("""
                 SELECT
                     SUM(-prevout.txout_value),
@@ -1104,9 +1104,9 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = prevout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))[0]
-            received[chain_id] = row[0];
-            balance[chain_id] = row[0];
-            count[0] = row[1];
+            sent[chain_id] = row[0];
+            balance[chain_id] += row[0];
+            count[1] = row[1];
             # Add chain
             chain = abe.store.get_chain_by_id(chain_id)
             chains.append(chain)
@@ -1178,7 +1178,7 @@ class Abe:
                  '<header><h3>Transactions</h3></header>\n']
                  
         if too_many:
-            body += ['<p class="limitTxs">Too many transactions to display.</p>']
+            body += ['<p id="limitTxs"><strong>Too many transactions to display.</strong></p>']
         else:
             body += ['<table class="tablesorter" cellspacing="0">\n<thead><tr><th>Transaction</th><th>Block</th>'
                      '<th>Approx. Time</th><th>Amount</th><th>Balance</th>'
@@ -1201,7 +1201,7 @@ class Abe:
                          format_satoshis(balance[elt['chain_id']], chain),
                          '</td>',
                          '</tr>\n']
-            body += ['</table></article>\n']
+        body += ['</table></article>\n']
 
     def search_form(abe, page):
         q = (page['params'].get('q') or [''])[0]
