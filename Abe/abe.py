@@ -54,9 +54,9 @@ TIME1970 = time.strptime('1970-01-01','%Y-%m-%d')
 EPOCH1970 = calendar.timegm(TIME1970)
 
 addrToName = {
-    "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to."],
-    "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", ""],
-    "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", ""]
+    "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to.", None],
+    "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", "Doantions for Isaac Yonemoto's research project into the potential cancer treatment named 9DS.", "http://www.indysci.org/"],
+    "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", "Donations to raise money for Advocate Hope Children's Charities.", "http://www.cryptoforkids.com/"]
 }
 
 # Abe-generated content should all be valid HTML and XHTML fragments.
@@ -1171,7 +1171,12 @@ class Abe:
         body += ['<strong>Address:</strong> ', address]
         
         if address in addrToName:
-            body += ['<br /><strong>Identity:</strong> ', addrToName[address][0]]
+            body += ['<br /><strong>Identity:</strong> ']
+            if addrToName[address][2]:
+                body += ["<a href='", addrToName[address][2], "' title='", addrToName[address][0], " Website'>"]
+            body += [addrToName[address][0]]
+            if addrToName[address][2]:
+                 body += ["</a>"]
             body += ['<br /><strong>Description:</strong> ', addrToName[address][1]]
         
         body += ['<br /><strong>Balance:</strong> '] + format_amounts(balance, True)
