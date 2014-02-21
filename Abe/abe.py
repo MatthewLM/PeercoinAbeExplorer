@@ -53,6 +53,12 @@ DONATIONS_NMC = 'NJ3MSELK1cWnqUa6xhF2wUYAnz3RSrWXcK'
 TIME1970 = time.strptime('1970-01-01','%Y-%m-%d')
 EPOCH1970 = calendar.timegm(TIME1970)
 
+addrToName = {
+    "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to."],
+    "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", ""],
+    "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", ""]
+}
+
 # Abe-generated content should all be valid HTML and XHTML fragments.
 # Configurable templates may contain either.  HTML seems better supported
 # under Internet Explorer.
@@ -1163,6 +1169,11 @@ class Abe:
 
         body += ['<article class="module width_half centerHalf"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">']
         body += ['<strong>Address:</strong> ', address]
+        
+        if address in addrToName:
+            body += ['<br /><strong>Identity:</strong> ', addrToName[address][0]]
+            body += ['<br /><strong>Description:</strong> ', addrToName[address][1]]
+        
         body += ['<br /><strong>Balance:</strong> '] + format_amounts(balance, True)
 
         for chain in chains:
@@ -2102,8 +2113,8 @@ def hash_to_address_link(version, hash, dotdot):
         return 'UNKNOWN'
     addr = util.hash_to_address(version, hash)
     addrTxt = addr
-    if addr == "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE":
-        addrTxt = "Charity Donation"
+    if addr in addrToName:
+        addrTxt = addrToName[addr]
     return ['<a href="', dotdot, 'address/', addr, '">', addrTxt, '</a>']
 
 def decode_script(script):
