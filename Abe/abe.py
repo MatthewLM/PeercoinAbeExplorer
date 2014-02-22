@@ -47,8 +47,8 @@ COPYRIGHT_YEARS = '2011'
 COPYRIGHT = "Abe developers"
 COPYRIGHT_URL = 'https://github.com/bitcoin-abe'
 
-DONATIONS_BTC = '1PWC7PNHL1SgvZaN7xEtygenKjWobWsCuf'
-DONATIONS_NMC = 'NJ3MSELK1cWnqUa6xhF2wUYAnz3RSrWXcK'
+DONATIONS_BTC = '1ExARP8eBAYGT39HBzzbN5nsB8t5C4w4Tx'
+DONATIONS_CCC = 'CKyVG71qYBtvxr57YAXuJhRTFxr6G4iQgs'
 
 TIME1970 = time.strptime('1970-01-01','%Y-%m-%d')
 EPOCH1970 = calendar.timegm(TIME1970)
@@ -57,7 +57,8 @@ addrToName = {
     "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to.", None],
     "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", "Donations for Isaac Yonemoto's research project into the potential cancer treatment named 9DS.", "http://www.indysci.org/"],
     "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", "Donations to raise money for Advocate Hope Children's Charities.", "http://www.cryptoforkids.com/"],
-    "CcFL7vTgoTL6r72HfzxXpx2PbDFM8YcHfn" : ["CCC HashAxe Pool", "Address for Hashaxe coinbase outputs. From this address mining revenues payouts are made minus the pool fee.", "https://ccc.hashaxe.com"]
+    "CcFL7vTgoTL6r72HfzxXpx2PbDFM8YcHfn" : ["CCC HashAxe Pool", "Address for Hashaxe coinbase outputs. From this address mining revenues payouts are made minus the pool fee.", "https://ccc.hashaxe.com"],
+    "CKyVG71qYBtvxr57YAXuJhRTFxr6G4iQgs" : ["CCC Abe Tip","CCC Tips for this CCC Abe software.", None]
 }
 
 # Abe-generated content should all be valid HTML and XHTML fragments.
@@ -85,8 +86,8 @@ DEFAULT_TEMPLATE = """
                 </span>
                 %(download)s
                 Tips appreciated!
-                <a href="http://blockchain.info/address/">BTC</a>
-                <a href="%(dotdot)saddress/">CCC</a>
+                <a href="http://blockchain.info/address/%(DONATIONS_BTC)s">BTC</a>
+                <a href="%(dotdot)saddress/%(DONATIONS_CCC)s">CCC</a>
             </p>
         </div>
     </section>
