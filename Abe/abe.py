@@ -1111,9 +1111,9 @@ class Abe:
                   JOIN pubkey ON (pubkey.pubkey_id = prevout.pubkey_id)
                  WHERE pubkey.pubkey_hash = ?
                    AND cc.in_longest = 1""", (dbhash,))[0]
-            row[0] = row[0] if row[0] else 0;
-            sent[chain_id] = -row[0];
-            balance[chain_id] += row[0];
+            out = row[0] if row[0] else 0;
+            sent[chain_id] = -out;
+            balance[chain_id] += out;
             count[1] = row[1];
             # Add chain
             chain = abe.store.get_chain_by_id(chain_id)
