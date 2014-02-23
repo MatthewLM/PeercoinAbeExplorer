@@ -1447,7 +1447,7 @@ class Abe:
     def handle_difficulty(abe, page):
         page['body'] = ['<article class="module width_3_quarter center3Quart"><header><h3>All Time Difficulty/h3></header>\n']
         chain = page['chain'];
-        diffs = abe.get_difficulties(abe, 0, abe.get_max_block_height(chain))
+        diffs = abe.get_difficulties(0, abe.get_max_block_height(chain), True)
         page['extraHead'] += ['<script type="text/javascript" src="site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
                               '<script type="text/javascript" src="site_assets/mpos/js/jquery.visualize.js"></script>',
                               '<link rel="stylesheet" href="site_assets/mpos/css/visualize.css" type="text/css" media="screen">'];
