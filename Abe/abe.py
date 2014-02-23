@@ -1605,7 +1605,7 @@ class Abe:
                     page['content_type'] = 'application/json'
 
     def q(abe, page):
-        page['body'] = ['<p>Supported APIs:</p>\n<ul>\n']
+        page['body'] = ['<article class="module width_half centerHalf"><header><h3>Supported APIs:</h3><header><div class="module_content">\n<ul>\n']
         for name in dir(abe):
             if not name.startswith("q_"):
                 continue
@@ -1615,7 +1615,7 @@ class Abe:
             if val.__doc__ is not None:
                 page['body'] += [' - ', escape(val.__doc__)]
             page['body'] += ['</li>\n']
-        page['body'] += ['</ul>\n']
+        page['body'] += ['</ul></div></article>\n']
 
     def get_max_block_height(abe, chain):
         # "getblockcount" traditionally returns max(block_height),
