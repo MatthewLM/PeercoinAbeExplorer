@@ -1610,7 +1610,7 @@ class Abe:
             if not name.startswith("q_"):
                 continue
             cmd = name[2:]
-            page['body'] += ['<li><a href="q/', cmd, '">', cmd, '</a>']
+            page['body'] += ['<li><a href="q/', cmd, '" target="_top">', cmd, '</a>']
             val = getattr(abe, name)
             if val.__doc__ is not None:
                 page['body'] += [' - ', escape(val.__doc__)]
