@@ -1441,7 +1441,7 @@ class Abe:
                                    (interval, start, chainID, stop))
         diffs = []
         for row in rows:
-            diffs.append(int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1]))))
+            diffs.append([int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1])))])
         return diffs
 
     def handle_difficulty(abe, page):
