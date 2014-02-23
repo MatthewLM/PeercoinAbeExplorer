@@ -73,6 +73,7 @@ DEFAULT_TEMPLATE = """
     <link rel="stylesheet" type="text/css" href="%(dotdot)s../site_assets/mpos/css/layout.css" />
     <link rel="stylesheet" type="text/css" href="%(dotdot)s%(STATIC_PATH)sabe.css" />
     <link rel="shortcut icon" href="%(dotdot)s%(STATIC_PATH)sfavicon.ico" />
+    %(extraHead)s
     <title>%(title)s</title>
 </head>
 <body onload="parent.explorerLoaded()">
@@ -220,6 +221,7 @@ class Abe:
         status = '200 OK'
         page = {
             "title": [escape(ABE_APPNAME), " ", ABE_VERSION],
+            "extraHead": [],
             "body": [],
             "env": env,
             "params": {},
@@ -279,6 +281,7 @@ class Abe:
         tvars['title'] = flatten(page['title'])
         tvars['h1'] = flatten(page.get('h1') or page['title'])
         tvars['body'] = flatten(page['body'])
+        tvars['extraHead'] = flatten(page['extraHead'])
         if abe.args.auto_agpl:
             tvars['download'] = (
                 ' <a href="' + page['dotdot'] + 'download">Source</a>')
@@ -1417,6 +1420,47 @@ class Abe:
         """, (q.upper(), q.upper())))
         return ret
 
+    def get_difficulties(abe, start, stop, all):
+        interval = (stop-start) / 100
+        rows = abe.store.selectall("""
+            SELECT b.block_nTime,
+                   b.block_nBits
+              FROM block b
+              JOIN chain_candidate cc ON (cc.block_id = b.block_id)
+              JOIN chain_candidate ints ON (
+                       ints.chain_id = cc.chain_id
+                   AND ints.in_longest = 1
+                   AND ints.block_height * ? + ? = cc.block_height)
+             WHERE cc.in_longest = 1
+               AND cc.chain_id = ?""" + (
+                "" if all else """
+               AND ints.block_height <= ?""") + """
+             ORDER BY cc.block_height""",
+                                   (interval, start, chain.id)
+                                   if all else
+                                   (interval, start, chain.id, stop))
+        diffs = []
+        for row in rows:
+            diffs.append(int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1]))))
+        return diffs
+
+    def handle_difficulty(abe, page):
+        page['body'] = ['<article class="module width_3_quarter center3Quart"><header><h3>All Time Difficulty/h3></header>\n']
+        chain = page['chain'];
+        diffs = get_difficulties(abe, 0, abe.get_max_block_height(chain))
+        page['extraHead'] += ['<script type="text/javascript" src="site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
+                              '<script type="text/javascript" src="site_assets/mpos/js/jquery.visualize.js"></script>',
+                              '<link rel="stylesheet" href="site_assets/mpos/css/visualize.css" type="text/css" media="screen">'];
+        page['body'] += ['<table width="70%" class="visualize" rel="line">'
+                         '<thead><tr>']
+        for diff in diffs:
+            page['body'] += ['<th scope="col">', format_time(diff[0]) , '</th>']
+        page['body'] += ['</tr></thead><tbody><tr>']
+        for diff in diffs:
+            page['body'] += ['<th scope="row">Difficulty</th><td>', diff[1], '</td>']
+        page['body'] += ['</tr></tbody></table>']
+        page['body'] += ['</div></article>\n']
+
     def handle_t(abe, page):
         abe.show_search_results(
             page,
@@ -1605,7 +1649,7 @@ class Abe:
                     page['content_type'] = 'application/json'
 
     def q(abe, page):
-        page['body'] = ['<article class="module width_half centerHalf"><header><h3>Supported APIs:</h3></header><div class="module_content">\n<ul>\n']
+        page['body'] = ['<article class="module width_half centerHalf"><header><h3>Supported APIs</h3></header><div class="module_content">\n<ul>\n']
         for name in dir(abe):
             if not name.startswith("q_"):
                 continue
