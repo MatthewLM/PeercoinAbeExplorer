@@ -1445,7 +1445,7 @@ class Abe:
         return diffs
 
     def handle_difficulty(abe, page):
-        page['body'] = ['<article class="module width_3_quarter center3Quart"><header><h3>All Time Difficulty/h3></header>\n']
+        page['body'] = ['<article class="module width_3_quarter center3Quart"><header><h3>All Time Difficulty</h3></header>\n']
         chain = page['chain'];
         diffs = abe.get_difficulties(0, abe.get_max_block_height(chain), True, chain.id)
         page['extraHead'] += ['<script type="text/javascript" src="site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
@@ -1460,6 +1460,7 @@ class Abe:
             page['body'] += ['<th scope="row">Difficulty</th><td>', diff[1], '</td>']
         page['body'] += ['</tr></tbody></table>']
         page['body'] += ['</div></article>\n']
+        page['body'] += ['<script type="text/javascript">$("table").visualize();</script>']
 
     def handle_t(abe, page):
         abe.show_search_results(
