@@ -1455,9 +1455,9 @@ class Abe:
                          '<thead><tr>']
         for diff in diffs:
             page['body'] += ['<th scope="col">', format_time(diff[0]) , '</th>']
-        page['body'] += ['</tr></thead><tbody><tr>']
+        page['body'] += ['</tr></thead><tbody><tr><th scope="row">Difficulty</th>']
         for diff in diffs:
-            page['body'] += ['<th scope="row">Difficulty</th><td>', diff[1], '</td>']
+            page['body'] += ['<td>', diff[1], '</td>']
         page['body'] += ['</tr></tbody></table>']
         page['body'] += ['</div></article>\n']
         page['body'] += ['<script type="text/javascript">$("table").visualize();</script>']
