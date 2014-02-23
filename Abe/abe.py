@@ -1460,9 +1460,8 @@ class Abe:
             page['body'] += ['<td>', diff[1], '</td>']
         page['body'] += ['</tr></tbody></table>']
         page['body'] += ['</div></article>\n']
-        page['body'] += ['<script type="text/javascript">',
-                         '$("table").each(function(){',
-                         '$(this).visualize({type: "line", width: $(this).css(width), height: "240px", colors: ["#6fb9e8", "#ec8526", "#9dc453", "#ddd74c"], lineDots: "double"});',
+        page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
+                         '$("table").visualize({type: "line", width: ($("article").width()*0.9).toString() + "px", height: "240px", colors: ["#6fb9e8", "#ec8526", "#9dc453", "#ddd74c"], lineDots: "double"});',
                          '});</script>']
 
     def handle_t(abe, page):
