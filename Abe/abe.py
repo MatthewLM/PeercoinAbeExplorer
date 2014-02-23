@@ -1605,7 +1605,7 @@ class Abe:
                     page['content_type'] = 'application/json'
 
     def q(abe, page):
-        page['body'] = ['<article class="module width_half centerHalf"><header><h3>Supported APIs:</h3><header><div class="module_content">\n<ul>\n']
+        page['body'] = ['<article class="module width_half centerHalf"><header><h3>Supported APIs:</h3></header><div class="module_content">\n<ul>\n']
         for name in dir(abe):
             if not name.startswith("q_"):
                 continue
