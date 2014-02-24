@@ -1438,7 +1438,7 @@ class Abe:
             diffs.append([int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1])))])
         return diffs
     
-    def difficulty_graph(abe, page, title, id, diffs):
+    def difficulty_graph(abe, page, title, id, inteval, format, diffs):
         page['body'] += ['<article class="module width_3_quarter center3Quart"><header><h3>', title,'</h3></header>\n']
         page['body'] += ['<div id="', id, '" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
@@ -1446,7 +1446,7 @@ class Abe:
         for diff in diffs:
             page['body'] += ['[', diff[0], '000,', diff[1], '],']
         page['body'] += [']],',
-                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "%e %b %Y"}, min: ', diffs[0][0],'000, max: ', diffs[-1][0],'000}}, seriesDefaults: {showMarker: false}, cursor: { show: true, tooltipLocation:"ne", showHorizontalLine: true}}',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', diffs[0][0],'000, max: ', diffs[-1][0],'000, tickInterval:"', inteval,'"}}, seriesDefaults: {showMarker: false}}',
                          ');});</script></article>']
 
     def handle_difficulty(abe, page):
@@ -1454,14 +1454,13 @@ class Abe:
         page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
                               '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
                               '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.dateAxisRenderer.js"></script>',
-                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.cursor.js"></script>',
                               '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
                               '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
         
         last = abe.get_max_block_height(chain)                      
-        abe.difficulty_graph(page, "All Time", "alltime", abe.get_difficulties(0, last, chain.id))
-        abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", "oneweek", abe.get_difficulties(last - 4032, last, chain.id))
-        abe.difficulty_graph(page, "575 Blocks (Approx. One day)", "oneday", abe.get_difficulties(last - 575, last, chain.id))
+        abe.difficulty_graph(page, "All Time", "alltime", "null", "%e %b %Y", abe.get_difficulties(0, last, chain.id))
+        abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", "oneweek", "one day", "%e %b %Y", abe.get_difficulties(last - 4032, last, chain.id))
+        abe.difficulty_graph(page, "575 Blocks (Approx. One day)", "oneday", "one hour", "%R", abe.get_difficulties(last - 575, last, chain.id))
 
     def handle_t(abe, page):
         abe.show_search_results(
