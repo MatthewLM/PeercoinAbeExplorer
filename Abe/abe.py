@@ -1420,7 +1420,7 @@ class Abe:
         """, (q.upper(), q.upper())))
         return ret
 
-    def get_difficulties(abe, start, stop, all, chainID):
+    def get_difficulties(abe, start, stop, chainID):
         interval = (stop-start) / 100
         rows = abe.store.selectall("""
             SELECT b.block_nTime,
@@ -1432,13 +1432,7 @@ class Abe:
                    AND ints.in_longest = 1
                    AND ints.block_height * ? + ? = cc.block_height)
              WHERE cc.in_longest = 1
-               AND cc.chain_id = ?""" + (
-                "" if all else """
-               AND ints.block_height <= ?""") + """
-             ORDER BY cc.block_height""",
-                                   (interval, start, chainID)
-                                   if all else
-                                   (interval, start, chainID, stop))
+               AND cc.chain_id = ?""",(interval, start, chainID))
         diffs = []
         for row in rows:
             diffs.append([int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1])))])
@@ -1447,22 +1441,17 @@ class Abe:
     def handle_difficulty(abe, page):
         page['body'] = ['<article class="module width_3_quarter center3Quart"><header><h3>All Time Difficulty</h3></header>\n']
         chain = page['chain'];
-        diffs = abe.get_difficulties(0, abe.get_max_block_height(chain), True, chain.id)
+        diffs = abe.get_difficulties(0, abe.get_max_block_height(chain), chain.id)
         page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
-                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.visualize.js"></script>',
-                              '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/visualize.css" type="text/css" media="screen">'];
-        page['body'] += ['<table width="70%" class="visualize" rel="line">'
-                         '<thead><tr>']
-        for diff in diffs:
-            page['body'] += ['<th scope="col">', diff[0] , '</th>']
-        page['body'] += ['</tr></thead><tbody><tr><th scope="row">Difficulty</th>']
-        for diff in diffs:
-            page['body'] += ['<td>', diff[1], '</td>']
-        page['body'] += ['</tr></tbody></table>']
-        page['body'] += ['</div></article>\n']
+                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
+                              '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
+                              '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
+        page['body'] += ['<div id="allTime" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
-                         '$("table").visualize({type: "line", width: ($("article").width()*0.9).toString() + "px", height: "240px", colors: ["#6fb9e8", "#ec8526", "#9dc453", "#ddd74c"], lineDots: "double"});',
-                         '});</script>']
+                         '$.jqplot("chartdiv",  [[']
+        for diff in diffs:
+            page['body'] += ['[', diff[0], ',', diff[1], '],']
+        page['body'] += [']]);}</script></article>']
 
     def handle_t(abe, page):
         abe.show_search_results(

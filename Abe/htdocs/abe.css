@@ -66,3 +66,7 @@ strong{
 #limitTxs{
     text-align: center;
 }
+.chart{
+    width: 90%;
+    height: 250px;
+}
