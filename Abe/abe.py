@@ -1433,6 +1433,13 @@ class Abe:
                    AND ints.block_height * ? + ? = cc.block_height)
              WHERE cc.in_longest = 1
                AND cc.chain_id = ?""",(interval, start, chainID))
+        rows += abe.store.selectall("""
+            SELECT b.block_nTime,
+                   b.block_nBits
+              FROM block b
+             WHERE cc.in_longest = 1
+               AND cc.block_height = ?
+               AND cc.chain_id = ?""",(stop, chainID))
         diffs = []
         for row in rows:
             diffs.append([int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1])))])
