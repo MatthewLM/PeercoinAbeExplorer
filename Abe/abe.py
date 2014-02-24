@@ -1453,7 +1453,7 @@ class Abe:
         for diff in diffs:
             page['body'] += ['[', diff[0], ',', diff[1], '],']
         page['body'] += [']],',
-                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "%s"}}}}',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: %e %b %Y"}, min: ', diffs[0][0],', max: ', diffs[-1][0],'}}, seriesDefaults: {showMarker: false}}',
                          ');});</script></article>']
 
     def handle_t(abe, page):

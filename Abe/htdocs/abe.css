@@ -69,4 +69,6 @@ strong{
 .chart{
     width: 90%;
     height: 250px;
+    left: 5%;
+    margin: 12px 0;
 }
