@@ -1430,15 +1430,15 @@ class Abe:
               JOIN chain_candidate ints ON (
                        ints.chain_id = cc.chain_id
                    AND ints.in_longest = 1
-                   AND ints.block_height * ? + ? = cc.block_height)
+                   AND (ints.block_height * ? + ? = cc.block_height OR cc.block_height = ?))
              WHERE cc.in_longest = 1
-               AND cc.chain_id = ?""",(interval, start, chainID))
+               AND cc.chain_id = ?""",(interval, start, stop, chainID))
         diffs = []
         for row in rows:
             diffs.append([int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1])))])
         return diffs
     
-    def difficulty_graph(abe, page, title, id, inteval, format, diffs):
+    def difficulty_graph(abe, page, title, id, interval, format, diffs):
         page['body'] += ['<article class="module width_3_quarter center3Quart"><header><h3>', title,'</h3></header>\n']
         page['body'] += ['<div id="', id, '" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
@@ -1447,11 +1447,11 @@ class Abe:
             page['body'] += ['[', diff[0], '000,', diff[1], '],']
         min = diffs[0][0]
         max = diffs[-1][0]
-        mod = inteval if inteval else 86400
+        mod = interval if interval else 86400
         min -= min % mod
         max += mod - (max % mod)
         page['body'] += [']],',
-                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', min,'000, max: ', max,'000, tickInterval: ', inteval if inteval else "null",'}}, seriesDefaults: {showMarker: false}}',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', min,'000, max: ', max,'000, tickInterval: ', interval if interval else "null",'}}, seriesDefaults: {showMarker: false}}',
                          ');});</script></article>']
 
     def handle_difficulty(abe, page):
