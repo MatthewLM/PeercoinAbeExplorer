@@ -1460,7 +1460,7 @@ class Abe:
         last = abe.get_max_block_height(chain)                      
         abe.difficulty_graph(page, "All Time", "alltime", "null", "%e %b %Y", abe.get_difficulties(0, last, chain.id))
         abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", "oneweek", 86400, "%e %b %Y", abe.get_difficulties(last - 4032, last, chain.id))
-        abe.difficulty_graph(page, "575 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 575, last, chain.id))
+        abe.difficulty_graph(page, "575 Blocks (Approx. One day)", "oneday", "'1 hour'", "%R", abe.get_difficulties(last - 575, last, chain.id))
 
     def handle_t(abe, page):
         abe.show_search_results(
