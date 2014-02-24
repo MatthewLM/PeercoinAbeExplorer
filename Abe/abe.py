@@ -1430,9 +1430,9 @@ class Abe:
               JOIN chain_candidate ints ON (
                        ints.chain_id = cc.chain_id
                    AND ints.in_longest = 1
-                   AND (ints.block_height * ? + ? = cc.block_height OR cc.block_height = ?))
+                   AND (ints.block_height * ? + ? = cc.block_height OR ints.block_height * ? + ? = ?))
              WHERE cc.in_longest = 1
-               AND cc.chain_id = ?""",(interval, start, stop, chainID))
+               AND cc.chain_id = ?""",(interval, start, interval, start, stop, chainID))
         diffs = []
         for row in rows:
             diffs.append([int(row[0]),util.target_to_difficulty(util.calculate_target(int(row[1])))])
