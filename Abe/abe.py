@@ -1444,14 +1444,17 @@ class Abe:
         diffs = abe.get_difficulties(0, abe.get_max_block_height(chain), chain.id)
         page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
                               '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
+                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.dateAxisRenderer.js"></script>',
                               '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
                               '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
         page['body'] += ['<div id="allTime" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
                          '$.jqplot("allTime",  [[']
         for diff in diffs:
-            page['body'] += ['[', diff[0], ',', diff[1], '],']
-        page['body'] += [']]);}</script></article>']
+            page['body'] += ['["', diff[0], '",', diff[1], '],']
+        page['body'] += [']],',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}, tickOptions: {formatString: "%s"}}}',
+                         ');});</script></article>']
 
     def handle_t(abe, page):
         abe.show_search_results(
