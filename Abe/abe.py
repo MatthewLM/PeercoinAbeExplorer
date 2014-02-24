@@ -1451,7 +1451,7 @@ class Abe:
             min -= min % inteval
             max += inteval - (max % inteval)
         page['body'] += [']],',
-                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', diffs[0][0],'000, max: ', diffs[-1][0],'000, tickInterval: ', inteval if inteval else "null",'}}, seriesDefaults: {showMarker: false}}',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', min,'000, max: ', max,'000, tickInterval: ', inteval if inteval else "null",'}}, seriesDefaults: {showMarker: false}}',
                          ');});</script></article>']
 
     def handle_difficulty(abe, page):
