@@ -1447,9 +1447,9 @@ class Abe:
             page['body'] += ['[', diff[0], '000,', diff[1], '],']
         min = diffs[0][0]
         max = diffs[-1][0]
-        if inteval:
-            min -= min % inteval
-            max += inteval - (max % inteval)
+        mod = inteval if inteval else 86400
+        min -= min % mod
+        max += mod - (max % mod)
         page['body'] += [']],',
                          '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', min,'000, max: ', max,'000, tickInterval: ', inteval if inteval else "null",'}}, seriesDefaults: {showMarker: false}}',
                          ');});</script></article>']
