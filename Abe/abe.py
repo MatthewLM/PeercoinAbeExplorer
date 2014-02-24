@@ -1439,7 +1439,7 @@ class Abe:
         return diffs
     
     def difficulty_graph(abe, page, title, diffs):
-        page['body'] = ['<article class="module width_3_quarter center3Quart"><header><h3>', title,'</h3></header>\n']
+        page['body'] += ['<article class="module width_3_quarter center3Quart"><header><h3>', title,'</h3></header>\n']
         page['body'] += ['<div id="allTime" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
                          '$.jqplot("allTime",  [[']
@@ -1459,8 +1459,8 @@ class Abe:
         
         last = abe.get_max_block_height(chain)                      
         abe.difficulty_graph(page, "All Time", abe.get_difficulties(0, last, chain.id))
-        abe.difficulty_graph(page, "4,032 Blocks (~One week)", abe.get_difficulties(last - 4032, last, chain.id))
-        abe.difficulty_graph(page, "575 Blocks (~One day)", abe.get_difficulties(last - 575, last, chain.id))
+        abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", abe.get_difficulties(last - 4032, last, chain.id))
+        abe.difficulty_graph(page, "575 Blocks (Approx. One day)", abe.get_difficulties(last - 575, last, chain.id))
 
     def handle_t(abe, page):
         abe.show_search_results(
