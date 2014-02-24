@@ -1437,6 +1437,7 @@ class Abe:
             SELECT b.block_nTime,
                    b.block_nBits
               FROM block b
+              JOIN chain_candidate cc ON (cc.block_id = b.block_id)
              WHERE cc.in_longest = 1
                AND cc.block_height = ?
                AND cc.chain_id = ?""",(stop, chainID))
