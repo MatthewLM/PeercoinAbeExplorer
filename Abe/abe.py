@@ -1448,7 +1448,7 @@ class Abe:
                               '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
         page['body'] += ['<div id="allTime" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
-                         '$.jqplot("chartdiv",  [[']
+                         '$.jqplot("allTime",  [[']
         for diff in diffs:
             page['body'] += ['[', diff[0], ',', diff[1], '],']
         page['body'] += [']]);}</script></article>']
