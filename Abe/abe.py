@@ -1446,7 +1446,7 @@ class Abe:
         for diff in diffs:
             page['body'] += ['[', diff[0], '000,', diff[1], '],']
         page['body'] += [']],',
-                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "%e %b %Y"}, min: ', diffs[0][0],'000, max: ', diffs[-1][0],'000}}, seriesDefaults: {showMarker: false}}',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "%e %b %Y"}, min: ', diffs[0][0],'000, max: ', diffs[-1][0],'000}}, seriesDefaults: {showMarker: false}, cursor: { show: true, tooltipLocation:"ne", showHorizontalLine: true}}',
                          ');});</script></article>']
 
     def handle_difficulty(abe, page):
