@@ -1451,7 +1451,7 @@ class Abe:
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
                          '$.jqplot("allTime",  [[']
         for diff in diffs:
-            page['body'] += ['["', diff[0], '",', diff[1], '],']
+            page['body'] += ['[', diff[0], ',', diff[1], '],']
         page['body'] += [']],',
                          '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "%s"}}}}',
                          ');});</script></article>']
