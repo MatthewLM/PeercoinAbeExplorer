@@ -1458,9 +1458,9 @@ class Abe:
                               '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
         
         last = abe.get_max_block_height(chain)                      
-        difficulty_graph(abe, page, "All Time", abe.get_difficulties(0, last, chain.id))
-        difficulty_graph(abe, page, "4,032 Blocks (~One week)", abe.get_difficulties(last - 4032, last, chain.id))
-        difficulty_graph(abe, page, "575 Blocks (~One day)", abe.get_difficulties(last - 575, last, chain.id))
+        abe.difficulty_graph(page, "All Time", abe.get_difficulties(0, last, chain.id))
+        abe.difficulty_graph(page, "4,032 Blocks (~One week)", abe.get_difficulties(last - 4032, last, chain.id))
+        abe.difficulty_graph(page, "575 Blocks (~One day)", abe.get_difficulties(last - 575, last, chain.id))
 
     def handle_t(abe, page):
         abe.show_search_results(
