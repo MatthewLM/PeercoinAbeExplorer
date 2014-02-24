@@ -1453,7 +1453,7 @@ class Abe:
         for diff in diffs:
             page['body'] += ['["', diff[0], '",', diff[1], '],']
         page['body'] += [']],',
-                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}, tickOptions: {formatString: "%s"}}}',
+                         '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "%s"}}}}',
                          ');});</script></article>']
 
     def handle_t(abe, page):
