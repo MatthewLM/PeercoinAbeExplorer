@@ -1454,6 +1454,7 @@ class Abe:
         page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
                               '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
                               '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.dateAxisRenderer.js"></script>',
+                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.cursor.js"></script>',
                               '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
                               '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
         
