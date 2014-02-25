@@ -1507,7 +1507,7 @@ class Abe:
         page['body'] += ['<div id="poolShare" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
                          '$.jqplot("poolShare",  [']
-        for pool in pools:
+        for pool in poolShares:
             page['body'] += ['[', pool[1], ',', pool[2], '],']
         page['body'] += [']],',
                          '{seriesDefaults: {renderer: jQuery.jqplot.PieRenderer, rendererOptions: {showDataLabels: true}}, legend: { show:true, location: "e" }}',
