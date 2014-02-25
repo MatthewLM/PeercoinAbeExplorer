@@ -1503,12 +1503,12 @@ class Abe:
                 if pool[0] in row[0]:
                     pool[2] += 1
                     break
-        page['body'] += ['<article class="module width_3_quarter center3Quart"><header><h3>Share of last 100 blocks</h3></header>\n']
+        page['body'] += ['<article class="module width_half centerHalf"><header><h3>Share of last 100 blocks</h3></header>\n']
         page['body'] += ['<div id="poolShare" class="chart"></div>']
         page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
-                         '$.jqplot("poolShare",  [']
+                         '$.jqplot("poolShare",  [[']
         for pool in poolShares:
-            page['body'] += ['[', pool[1], ',', pool[2], '],']
+            page['body'] += ['["', pool[1], '",', pool[2], '],']
         page['body'] += [']],',
                          '{seriesDefaults: {renderer: jQuery.jqplot.PieRenderer, rendererOptions: {showDataLabels: true}}, legend: { show:true, location: "e" }}',
                          ');});</script></article>']
