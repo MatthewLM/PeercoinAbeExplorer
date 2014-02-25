@@ -1420,6 +1420,12 @@ class Abe:
         """, (q.upper(), q.upper())))
         return ret
 
+    def include_jqplot(abe, page):
+        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
+                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
+                              '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
+                              '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
+
     def get_difficulties(abe, start, stop, chainID):
         interval = (stop-start) / 100
         rows = abe.store.selectall("""
@@ -1463,18 +1469,50 @@ class Abe:
                          ');});</script></article>']
 
     def handle_difficulty(abe, page):
+        abe.include_jqplot(page)
         chain = page['chain'];
-        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
-                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
-                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.dateAxisRenderer.js"></script>',
-                              '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
-                              '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
+        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.dateAxisRenderer.min.js"></script>'];
         
         last = abe.get_max_block_height(chain)                      
         abe.difficulty_graph(page, "All Time", "alltime", None, "%e %b %Y", abe.get_difficulties(0, last, chain.id))
         abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", "oneweek", 86400, "%e %b %Y", abe.get_difficulties(last - 4032, last, chain.id))
         abe.difficulty_graph(page, "576 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 576, last, chain.id))
-
+        
+    def handle_poolShare(abe, page):
+        abe.include_jqplot(page)
+        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.pieRenderer.min.js"></script>'];
+        poolShares = [
+            ["/HashAxe/", "Hash Axe", 0],
+            ["/poolerino/", "Poolerino", 0],
+            ["/stratumPool/", "Other Stratum", 0],
+            ["", "Other/Solo", 0],
+        ]
+        rows = abe.store.selectall(
+            """
+            SELECT txin.txin_scriptSig 
+            FROM txin 
+            JOIN block_tx ON (block_tx.tx_id = txin.tx_id)
+            JOIN block ON (block.block_id = block_tx.block_id)
+            WHERE block_tx.tx_pos = 0
+            ORDER BY block.block_height DESC
+            LIMIT 100
+            """
+        )
+        for row in rows:
+            for pool in poolShares:
+                if pool[0] in row[0]:
+                    pool[2] += 1
+                    break
+        page['body'] += ['<article class="module width_3_quarter center3Quart"><header><h3>Share of last 100 blocks</h3></header>\n']
+        page['body'] += ['<div id="poolShare" class="chart"></div>']
+        page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
+                         '$.jqplot("poolShare",  [']
+        for pool in pools:
+            page['body'] += ['[', pool[1], ',', pool[2], '],']
+        page['body'] += [']],',
+                         '{seriesDefaults: {renderer: jQuery.jqplot.PieRenderer, rendererOptions: {showDataLabels: true}}, legend: { show:true, location: "e" }}',
+                         ');});</script></article>']
+        
     def handle_t(abe, page):
         abe.show_search_results(
             page,
