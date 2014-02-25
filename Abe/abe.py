@@ -59,6 +59,7 @@ addrToName = {
     "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", "Donations to raise money for Advocate Hope Children's Charities.", "http://www.cryptoforkids.com/"],
     "CcFL7vTgoTL6r72HfzxXpx2PbDFM8YcHfn" : ["CCC HashAxe Pool", "Address for Hashaxe coinbase outputs. From this address mining revenues payouts are made minus the pool fee.", "https://ccc.hashaxe.com"],
     "CKyVG71qYBtvxr57YAXuJhRTFxr6G4iQgs" : ["CCC Abe Tip","CCC Tips for this CCC Abe software.", None]
+    "CULnQZCi9Cpw52Urzck4K9i6owNUkjpA4B" : ["CCC Poolerino Pool", "Address for Poolerino coinbase outputs.", "http://ccc.poolerino.com/"]
 }
 
 # Abe-generated content should all be valid HTML and XHTML fragments.
