@@ -1483,7 +1483,7 @@ class Abe:
         abe.include_jqplot(page)
         page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.pieRenderer.min.js"></script>'];
         poolShares = [
-            ["/HashAxe/", "Hash Axe", 0],
+            ["/HashAxe/", "HashAxe", 0],
             ["/poolerino/", "Poolerino", 0],
             ["/stratumPool/", "Other Stratum", 0],
             ["", "Other/Solo", 0],
