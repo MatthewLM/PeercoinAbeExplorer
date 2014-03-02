@@ -82,7 +82,7 @@ class Chain(object):
     def parse_transaction(chain, binary_tx):
         return chain.ds_parse_transaction(util.str_to_ds(binary_tx))
 
-    datadir_conf_file_name = "cancercurecoin.conf"
+    datadir_conf_file_name = "charitycoin.conf"
     datadir_rpcport = 8332
 
 class Sha256Chain(Chain):
