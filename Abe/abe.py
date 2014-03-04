@@ -1485,6 +1485,7 @@ class Abe:
         poolShares = [
             ["/HashAxe/", "HashAxe", 0],
             ["/poolerino/", "Poolerino", 0],
+            ["WestList", "WestList", 0],
             ["/stratumPool/", "Other Stratum", 0],
             ["", "Other/Solo", 0],
         ]
