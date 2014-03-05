@@ -57,6 +57,7 @@ addrToName = {
     "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to.", None],
     "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", "Donations for Isaac Yonemoto's research project into the potential cancer treatment named 9DS.", "http://www.indysci.org/"],
     "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", "Donations to raise money for Advocate Hope Children's Charities.", "http://www.cryptoforkids.com/"],
+    "CYfHMi1ukZP6vYoBsKXfHXMLguJCUZ9A45" : ["Save The Greyhounds", "Donations to support the rescue of greyhound dogs against cruel torture and slaughter that occurs in Spain.", "http://savegreyhound.hol.es/"],
     "CcFL7vTgoTL6r72HfzxXpx2PbDFM8YcHfn" : ["CHA HashAxe Pool", "Address for Hashaxe coinbase outputs. From this address mining revenues payouts are made minus the pool fee.", "https://cha.hashaxe.com"],
     "CKyVG71qYBtvxr57YAXuJhRTFxr6G4iQgs" : ["CHA Abe Tip","CHA Tips for this CHA Abe software.", None],
     "CULnQZCi9Cpw52Urzck4K9i6owNUkjpA4B" : ["CHA Poolerino Pool", "Address for Poolerino coinbase outputs.", "http://cha.poolerino.com/"]
@@ -1486,6 +1487,7 @@ class Abe:
             ["/HashAxe/", "HashAxe", 0],
             ["/poolerino/", "Poolerino", 0],
             ["WestList", "WestList", 0],
+            ["Forkpool", "/forkpool/", 0],
             ["/stratumPool/", "Other Stratum", 0],
             ["", "Other/Solo", 0],
         ]
