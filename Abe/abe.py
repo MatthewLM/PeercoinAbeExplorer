@@ -1488,6 +1488,7 @@ class Abe:
             ["/poolerino/", "Poolerino", 0],
             ["WestList", "WestList", 0],
             ["/forkpool/", "Forkpool", 0],
+            ["/CharityMiningPools/", "CharityMiningPools", 0],
             ["/stratumPool/", "Other Stratum", 0],
             ["", "Other/Solo", 0],
         ]
