@@ -54,7 +54,7 @@ def calculate_target(nBits):
     return (nBits & 0xffffff) << (8 * ((nBits >> 24) - 3))
 
 def target_to_difficulty(target):
-    return ((1 << 224) - 1) * 1000 / (target + 1) / 1000.0
+    return ((1 << 224) - 1) * 1000000 / (target + 1) / 1000000.0
 
 def calculate_difficulty(nBits):
     return target_to_difficulty(calculate_target(nBits))
