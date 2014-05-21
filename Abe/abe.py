@@ -1401,10 +1401,9 @@ class Abe:
         return ret
 
     def include_jqplot(abe, page):
-        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery-2.0.3.min.js"></script>',
-                              '<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/jquery.jqplot.min.js"></script>',
-                              '<link rel="stylesheet" href="', page['dotdot'], '../site_assets/mpos/css/jquery.jqplot.min.css" type="text/css" media="screen">',
-                              '<!--[if IE]><script type="text/javascript" src="site_assets/mpos/js/excanvas.js"></script><![endif]-->'];
+        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], 'static/jquery-2.0.3.min.js"></script>',
+                              '<script type="text/javascript" src="', page['dotdot'], 'static/jquery.jqplot.min.js"></script>',
+                              '<link rel="stylesheet" href="', page['dotdot'], 'static/jquery.jqplot.min.css" type="text/css" media="screen">']
 
     def get_difficulties(abe, start, stop, chainID):
         interval = (stop-start) / 100
@@ -1451,7 +1450,7 @@ class Abe:
     def handle_difficulty(abe, page):
         abe.include_jqplot(page)
         chain = page['chain'];
-        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.dateAxisRenderer.min.js"></script>'];
+        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], 'static/jqplot.dateAxisRenderer.min.js"></script>'];
         
         last = abe.get_max_block_height(chain)                      
         abe.difficulty_graph(page, "All Time", "alltime", None, "%e %b %Y", abe.get_difficulties(0, last, chain.id))
