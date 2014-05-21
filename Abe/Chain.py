@@ -21,6 +21,8 @@ def create(policy, **kwargs):
     #print "create(%s, %r)" % (policy, kwargs)
     if policy in [None, "Bitcoin", "Testnet", "LegacyNoBit8"]:
         return Sha256Chain(**kwargs)
+    if policy == "Latium":
+	    return Latium(**kwargs)
     if policy == "NovaCoin":
         return NovaCoin(**kwargs)
     return Sha256NmcAuxPowChain(**kwargs)
@@ -82,8 +84,8 @@ class Chain(object):
     def parse_transaction(chain, binary_tx):
         return chain.ds_parse_transaction(util.str_to_ds(binary_tx))
 
-    datadir_conf_file_name = "charitycoin.conf"
-    datadir_rpcport = 8332
+    datadir_conf_file_name = "Latium.conf"
+    datadir_rpcport = 12689
 
 class Sha256Chain(Chain):
     def block_header_hash(chain, header):
@@ -134,3 +136,19 @@ class NovaCoin(LtcScryptChain, PpcPosChain):
 
     datadir_conf_file_name = "novacoin.conf"
     datadir_rpcport = 8344
+
+class Latium(LtcScryptChain, PpcPosChain):
+    def __init__(chain, **kwargs):
+        chain.name = 'Latium'
+        chain.code3 = 'LAT'
+        chain.address_version = "\x17"
+        chain.magic = "\xae\xdb\xfc\xb2"
+        chain.decimals = 6
+        Chain.__init__(chain, **kwargs)
+
+    def has_feature(chain, feature):
+        return feature == 'nvc_proof_of_stake'
+
+    datadir_conf_file_name = "Latium.conf"
+    datadir_rpcport = 12689
+

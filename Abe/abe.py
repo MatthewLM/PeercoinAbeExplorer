@@ -39,29 +39,18 @@ import base58
 
 __version__ = version.__version__
 
-ABE_APPNAME = "CHA Abe"
+ABE_APPNAME = "LAT Abe"
 ABE_VERSION = __version__
-ABE_URL = 'https://github.com/MatthewLM/cancercurecoin-abe'
+ABE_URL = 'https://github.com/BuckyGreen/latiumexplorer'
 
 COPYRIGHT_YEARS = '2011'
 COPYRIGHT = "Abe developers"
 COPYRIGHT_URL = 'https://github.com/bitcoin-abe'
 
 DONATIONS_BTC = '1ExARP8eBAYGT39HBzzbN5nsB8t5C4w4Tx'
-DONATIONS_CCC = 'CKyVG71qYBtvxr57YAXuJhRTFxr6G4iQgs'
 
 TIME1970 = time.strptime('1970-01-01','%Y-%m-%d')
 EPOCH1970 = calendar.timegm(TIME1970)
-
-addrToName = {
-    "CJgs13yMvhSi7rgLrbxS4rifs9qqxQs3fE" : ["Charity Donation", "This is the address that miners are required to donate at least 5% of the block subsidies to.", None],
-    "CKdtn2GvtYXwbZBxiHSTBB66rcXBhgYAnu" : ["Project Marilyn", "Donations for Isaac Yonemoto's research project into the potential cancer treatment named 9DS.", "http://www.indysci.org/"],
-    "CKjjQMrcuxTLVdjcsUForrc88vkY8GgVEY" : ["Crypto for Kids", "Donations to raise money for Advocate Hope Children's Charities.", "http://www.cryptoforkids.com/"],
-    "CYfHMi1ukZP6vYoBsKXfHXMLguJCUZ9A45" : ["Save The Greyhounds", "Donations to support the rescue of greyhound dogs against cruel torture and slaughter that occurs in Spain.", "http://savegreyhound.hol.es/"],
-    "CcFL7vTgoTL6r72HfzxXpx2PbDFM8YcHfn" : ["CHA HashAxe Pool", "Address for Hashaxe coinbase outputs. From this address mining revenues payouts are made minus the pool fee.", "https://cha.hashaxe.com"],
-    "CKyVG71qYBtvxr57YAXuJhRTFxr6G4iQgs" : ["CHA Abe Tip","CHA Tips for this CHA Abe software.", None],
-    "CULnQZCi9Cpw52Urzck4K9i6owNUkjpA4B" : ["CHA Poolerino Pool", "Address for Poolerino coinbase outputs.", "http://cha.poolerino.com/"]
-}
 
 # Abe-generated content should all be valid HTML and XHTML fragments.
 # Configurable templates may contain either.  HTML seems better supported
@@ -72,7 +61,7 @@ DEFAULT_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="%(dotdot)s../site_assets/mpos/css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="%(dotdot)slayout.css" />
     <link rel="stylesheet" type="text/css" href="%(dotdot)s%(STATIC_PATH)sabe.css" />
     <link rel="shortcut icon" href="%(dotdot)s%(STATIC_PATH)sfavicon.ico" />
     %(extraHead)s
@@ -90,7 +79,6 @@ DEFAULT_TEMPLATE = """
                 %(download)s
                 Tips appreciated!
                 <a href="http://blockchain.info/address/%(DONATIONS_BTC)s">BTC</a>
-                <a href="%(dotdot)saddress/%(DONATIONS_CCC)s">CHA</a>
             </p>
         </div>
     </section>
@@ -1177,16 +1165,6 @@ class Abe:
 
         body += ['<article class="module width_half centerHalf"><header><h3>ADDRESS INFORMATION</h3></header><div class="module_content">']
         body += ['<strong>Address:</strong> ', address]
-        
-        if address in addrToName:
-            body += ['<br /><strong>Identity:</strong> ']
-            if addrToName[address][2]:
-                body += ["<a href='", addrToName[address][2], "' title='", addrToName[address][0], " Website'>"]
-            body += [addrToName[address][0]]
-            if addrToName[address][2]:
-                 body += ["</a>"]
-            body += ['<br /><strong>Description:</strong> ', addrToName[address][1]]
-        
         body += ['<br /><strong>Balance:</strong> '] + format_amounts(balance, True)
 
         for chain in chains:
@@ -1479,44 +1457,6 @@ class Abe:
         abe.difficulty_graph(page, "All Time", "alltime", None, "%e %b %Y", abe.get_difficulties(0, last, chain.id))
         abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", "oneweek", 86400, "%e %b %Y", abe.get_difficulties(last - 4032, last, chain.id))
         abe.difficulty_graph(page, "576 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 576, last, chain.id))
-        
-    def handle_poolShare(abe, page):
-        abe.include_jqplot(page)
-        page['extraHead'] += ['<script type="text/javascript" src="', page['dotdot'], '../site_assets/mpos/js/plugins/jqplot.pieRenderer.min.js"></script>'];
-        poolShares = [
-            ["/HashAxe/", "HashAxe", 0],
-            ["/poolerino/", "Poolerino", 0],
-            ["WestList", "WestList", 0],
-            ["/forkpool/", "Forkpool", 0],
-            ["/CharityMiningPools/", "CharityMiningPools", 0],
-            ["/stratumPool/", "Other Stratum", 0],
-            ["", "Other/Solo", 0],
-        ]
-        rows = abe.store.selectall(
-            """
-            SELECT txin.txin_scriptSig 
-            FROM txin 
-            JOIN block_tx ON (block_tx.tx_id = txin.tx_id)
-            JOIN block ON (block.block_id = block_tx.block_id)
-            WHERE block_tx.tx_pos = 0
-            ORDER BY block.block_height DESC
-            LIMIT 100
-            """
-        )
-        for row in rows:
-            for pool in poolShares:
-                if pool[0] in row[0]:
-                    pool[2] += 1
-                    break
-        page['body'] += ['<article class="module width_half centerHalf"><header><h3>Share of last 100 blocks</h3></header>\n']
-        page['body'] += ['<div id="poolShare" class="chart"></div>']
-        page['body'] += ['<script type="text/javascript"> $(document).ready(function(){',
-                         '$.jqplot("poolShare",  [[']
-        for pool in poolShares:
-            page['body'] += ['["', pool[1], '",', pool[2], '],']
-        page['body'] += [']],',
-                         '{seriesDefaults: {renderer: jQuery.jqplot.PieRenderer, rendererOptions: {showDataLabels: true}}, legend: { show:true, location: "e" }}',
-                         ');});</script></article>']
         
     def handle_t(abe, page):
         abe.show_search_results(
@@ -2221,10 +2161,7 @@ def hash_to_address_link(version, hash, dotdot):
     if hash is None:
         return 'UNKNOWN'
     addr = util.hash_to_address(version, hash)
-    addrTxt = addr
-    if addr in addrToName:
-        addrTxt = addrToName[addr][0]
-    return ['<a href="', dotdot, 'address/', addr, '">', addrTxt, '</a>']
+    return ['<a href="', dotdot, 'address/', addr, '">', addr, '</a>']
 
 def decode_script(script):
     if script is None:
@@ -2372,7 +2309,6 @@ def main(argv):
             "COPYRIGHT_YEARS": COPYRIGHT_YEARS,
             "COPYRIGHT_URL": COPYRIGHT_URL,
             "DONATIONS_BTC": DONATIONS_BTC,
-            "DONATIONS_CCC": DONATIONS_CCC,
             "CONTENT_TYPE": DEFAULT_CONTENT_TYPE,
             "HOMEPAGE": DEFAULT_HOMEPAGE,
             },
