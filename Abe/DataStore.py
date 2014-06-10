@@ -2629,7 +2629,7 @@ store._ddl['txout_approx'],
             WHERE block_id = ?
         """, (block_id,))
         
-        store.add_block_hash_to_file(hash, height)
+        store.add_block_hash_to_file(hash, int(height))
 
         store.sql("""
             UPDATE chain_candidate
