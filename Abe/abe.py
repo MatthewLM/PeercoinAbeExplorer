@@ -39,9 +39,9 @@ import base58
 
 __version__ = version.__version__
 
-ABE_APPNAME = "LAT Abe"
+ABE_APPNAME = "RBT Abe"
 ABE_VERSION = __version__
-ABE_URL = 'https://github.com/BuckyGreen/latiumexplorer'
+ABE_URL = 'https://github.com/Rimbit/RimbitExplorer'
 
 COPYRIGHT_YEARS = '2011'
 COPYRIGHT = "Abe developers"

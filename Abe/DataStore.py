@@ -25,6 +25,7 @@
 import os
 import re
 import errno
+import struct
 
 import Chain
 
@@ -123,6 +124,10 @@ class DataStore(object):
     """
 
     def __init__(store, args):
+        # Open blockhash file for editing
+        store.hashfile = open(args.hashfile, "w+b")
+        store.numhashes, = struct.unpack(">I", store.hashfile.read(4))
+
         """
         Open and store a connection to the SQL database.
 
@@ -219,6 +224,8 @@ class DataStore(object):
         if store.in_transaction:
             store.commit()
 
+    def __del__(store):
+        store.hashfile.close()
 
     def init_conn(store):
         store.conn = store.connect()
@@ -2495,6 +2502,8 @@ store._ddl['txout_approx'],
             else:
                 in_longest = 0
 
+        store.add_block_hash_to_file(store.hashin(b['hash']), b['height'])
+
         store.sql("""
             INSERT INTO chain_candidate (
                 chain_id, block_id, in_longest, block_height
@@ -2581,7 +2590,18 @@ store._ddl['txout_approx'],
             "SELECT prev_block_id FROM block WHERE block_id = ?",
             (block_id,))[0]
 
+    def change_num_hashes(store, amount):
+        store.numhashes += amount
+        store.hashfile.seek(0)
+        store.hashfile.write(struct.pack(">I", store.numhashes)
+
+    def add_block_hash_to_file(store, block_hash, height):
+        store.hashfile.seek(4 + 16*height)
+        store.hashfile.write(struct.pack("16s", block_hash))
+        store.change_num_hashes(1)
+
     def disconnect_block(store, block_id, chain_id):
+        store.change_num_hashes(-1)
         store.sql("""
             UPDATE chain_candidate
                SET in_longest = 0
@@ -2589,6 +2609,16 @@ store._ddl['txout_approx'],
                   (block_id, chain_id))
 
     def connect_block(store, block_id, chain_id):
+        # Get block hash and height
+
+        height, hash = store.selectrow("""
+            SELECT block_height, block_hash 
+            FROM block
+            WHERE block_id = ?
+        """, (block_id,))
+        
+        store.add_block_hash_to_file(hash, height)
+
         store.sql("""
             UPDATE chain_candidate
                SET in_longest = 1
