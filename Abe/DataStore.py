@@ -2593,7 +2593,7 @@ store._ddl['txout_approx'],
     def change_num_hashes(store, amount):
         store.numhashes += amount
         store.hashfile.seek(0)
-        store.hashfile.write(struct.pack(">I", store.numhashes)
+        store.hashfile.write(struct.pack(">I", store.numhashes))
 
     def add_block_hash_to_file(store, block_hash, height):
         store.hashfile.seek(4 + 16*height)
