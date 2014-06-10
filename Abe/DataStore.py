@@ -54,6 +54,7 @@ CONFIG_DEFAULTS = {
     "keep_scriptsig":     True,
     "import_tx":          [],
     "default_loader":     "default",
+    "hashfile":           ""
 }
 
 WORK_BITS = 304  # XXX more than necessary.
@@ -124,7 +125,10 @@ class DataStore(object):
     """
 
     def __init__(store, args):
+
         # Open blockhash file for editing
+        if args.hashfile == "":
+            raise Exception("Please set the hashfile config argument to the file of the valid hashes")
         store.hashfile = open(args.hashfile, "w+b")
         store.numhashes, = struct.unpack(">I", store.hashfile.read(4))
 
