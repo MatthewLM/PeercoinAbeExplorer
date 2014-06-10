@@ -129,8 +129,16 @@ class DataStore(object):
         # Open blockhash file for editing
         if args.hashfile == "":
             raise Exception("Please set the hashfile config argument to the file of the valid hashes")
+
         store.hashfile = open(args.hashfile, "w+b")
-        store.numhashes, = struct.unpack(">I", store.hashfile.read(4))
+
+        num_hash_bytes = store.hashfile.read(4)
+
+        if num_hash_bytes == "":
+            store.numhashes = 0
+            store.hashfile.write(struct.pack(">I", 0))
+        else:
+            store.numhashes, = struct.unpack(">I", num_hash_bytes)
 
         """
         Open and store a connection to the SQL database.
