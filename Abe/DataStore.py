@@ -130,7 +130,7 @@ class DataStore(object):
         if args.hashfile == "":
             raise Exception("Please set the hashfile config argument to the file of the valid hashes")
 
-        store.hashfile = open(args.hashfile, "w+b")
+        store.hashfile = open(args.hashfile, "r+b")
 
         num_hash_bytes = store.hashfile.read(4)
 
