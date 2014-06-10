@@ -2514,7 +2514,7 @@ store._ddl['txout_approx'],
             else:
                 in_longest = 0
 
-        store.add_block_hash_to_file(store.hashin(b['hash']), b['height'])
+        store.add_block_hash_to_file(b['hash'], b['height'])
 
         store.sql("""
             INSERT INTO chain_candidate (
@@ -2629,7 +2629,8 @@ store._ddl['txout_approx'],
             WHERE block_id = ?
         """, (block_id,))
         
-        store.add_block_hash_to_file(hash, int(height))
+        # This can be called twice during a fork due to slight bug in abe but no big problem
+        store.add_block_hash_to_file(store.hashout(hash), int(height))
 
         store.sql("""
             UPDATE chain_candidate
