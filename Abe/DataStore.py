@@ -2616,7 +2616,7 @@ store._ddl['txout_approx'],
 
     def get_valid_hashes(store, locator):
         # Loop through hashes and look for one we have, up to 32
-        print locator
+        store.log.info(locator)
         useheight = 0
         for x in xrange(min(len(locator)/32, 32)):
             height, = store.selectrow("""
