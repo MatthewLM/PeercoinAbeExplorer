@@ -2616,18 +2616,17 @@ store._ddl['txout_approx'],
 
     def get_valid_hashes(store, locator):
         # Loop through hashes and look for one we have, up to 32
-        store.log.info(locator)
         useheight = 0
         for x in xrange(min(len(locator)/32, 32)):
-            height, = store.selectrow("""
+            height = store.selectrow("""
                 SELECT b.block_height
                 FROM block b
                 JOIN chain_candidate cc ON (b.block_id = cc.block_id)
                 WHERE b.block_hash = ? AND cc.in_longest = 1
-            """, (store.hashin_hex(locator[x*32:32]),))
+            """, (store.hashin(locator[x*32:32]),))
 
             if height:
-                useheight = int(height)
+                useheight = int(height[0])
                 break
 
         # Provide file data from height

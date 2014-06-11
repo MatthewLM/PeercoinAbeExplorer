@@ -226,6 +226,8 @@ class Abe:
 
         if env['REQUEST_METHOD'] == 'POST':
             page['post'] = env['wsgi.input'].read()
+            abe.log.info("POST LEN = {:d} CONT = {:s}".format(len(page['post']), page['post']))
+
 
         if abe.fix_path_info(env):
             abe.log.debug("fixed path_info")
