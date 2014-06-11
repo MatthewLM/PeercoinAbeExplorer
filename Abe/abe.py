@@ -226,8 +226,6 @@ class Abe:
 
         if env['REQUEST_METHOD'] == 'POST':
             page['post'] = env['wsgi.input'].read()
-            abe.log.info("POST LEN = {:d} CONT = {:s}".format(len(page['post']), page['post']))
-
 
         if abe.fix_path_info(env):
             abe.log.debug("fixed path_info")
@@ -671,11 +669,11 @@ class Abe:
                           escape(chain.name), '?hi=', height, '">',
                           escape(chain.name), '</a> ', height]
 
-        body += ['<article class="module width_3_quarter center3Quart"><header><h3>BLOCK INFORMATION</h3></header><div class="module_content">']
+        body += ['<article class="module width_3_quarter center3Quart"><header><h3>BLOCK INFORMATION</h3></header><div class="module_content"><strong>']
         if is_stake_chain:
             body += [
                 'Proof of Stake' if is_proof_of_stake else 'Proof of Work',
-                ': ',
+                ':</strong> ',
                 format_satoshis(generated, chain), ' coins generated<br />\n']
         body += ['<strong>Hash:</strong> ', block_hash, '<br />\n']
 

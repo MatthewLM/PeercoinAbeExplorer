@@ -47,6 +47,7 @@ section#main{
 }
 #navP1 a, #navP3 a{
     padding: 0 4px;
+    font-size: 13px;
 }
 strong{
     padding-right: 3px;
