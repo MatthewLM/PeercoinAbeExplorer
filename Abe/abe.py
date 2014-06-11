@@ -1790,7 +1790,7 @@ class Abe:
         """Provides valid hashes following a hash in a POST request"""
         if 'post' not in page:
             return 'Requires POST data. 32 bytes of block hash data (little-endian) per known block in reverse chronological order. ' \
-                    'Returns the first block hash that is valid plus all following block hashes, using 16 byes per hash. Also in little-endian.' \
+                    'Returns the first block hash that is valid plus all following block hashes, using 16 byes per hash. Also in little-endian. ' \
                     'Upto 32 hashes are allowed in the POST request.'
         
         return abe.store.get_valid_hashes(page['post'])

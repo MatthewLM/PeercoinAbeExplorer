@@ -2631,7 +2631,7 @@ store._ddl['txout_approx'],
 
         # Provide file data from height
         store.hashfile.seek(4 + useheight*16)
-        return store.hashfile.read(store.numhashes-useheight)
+        return store.hashfile.read((store.numhashes-useheight)*16)
 
     def disconnect_block(store, block_id, chain_id):
         # Get block height
