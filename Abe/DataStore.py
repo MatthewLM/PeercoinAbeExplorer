@@ -2623,7 +2623,7 @@ store._ddl['txout_approx'],
                 FROM block b
                 JOIN chain_candidate cc ON (b.block_id = cc.block_id)
                 WHERE b.block_hash = ? AND cc.in_longest = 1
-            """, (store.hashin_hex(locator[x*32:32]))
+            """, (store.hashin_hex(locator[x*32:32])))
 
             if height:
                 useheight = int(height)
