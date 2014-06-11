@@ -224,6 +224,9 @@ class Abe:
         if 'QUERY_STRING' in env:
             page['params'] = urlparse.parse_qs(env['QUERY_STRING'])
 
+        if env['REQUEST_METHOD'] == 'POST':
+            page['post'] = env['wsgi.input'].read()
+
         if abe.fix_path_info(env):
             abe.log.debug("fixed path_info")
             return redirect(page)
@@ -1782,6 +1785,15 @@ class Abe:
         if len(addr) >= 26:
             return 'X5'
         return 'SZ'
+
+    def q_getvalidhashes(abe, page, chain):
+        """Provides valid hashes following a hash in a POST request"""
+        if 'post' not in page:
+            return 'Requires POST data. 32 bytes of block hash data (little-endian) per known block in reverse chronological order. ' \
+                    'Returns the first block hash that is valid plus all following block hashes, using 16 byes per hash. Also in little-endian.' \
+                    'Upto 32 hashes are allowed in the POST request.'
+        
+        return abe.store.get_valid_hashes(page['post'])
 
     def q_nethash(abe, page, chain):
         """shows statistics about difficulty and network power."""

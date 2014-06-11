@@ -2611,8 +2611,27 @@ store._ddl['txout_approx'],
 
     def add_block_hash_to_file(store, block_hash, height):
         store.hashfile.seek(4 + 16*height)
-        store.hashfile.write(struct.pack("16s", block_hash))
+        store.hashfile.write(block_hash)
         store.change_num_hashes(height + 1)
+
+    def get_valid_hashes(store, locator):
+        # Loop through hashes and look for one we have, up to 32
+        useheight = 0
+        for x in xrange(min(len(locator)/32, 32)):
+            height, = store.selectrow("""
+                SELECT b.block_height
+                FROM block b
+                JOIN chain_candidate cc ON (b.block_id = cc.block_id)
+                WHERE b.block_hash = ? AND cc.in_longest = 1
+            """, (store.hashin_hex(locator[x*32:32]))
+
+            if height:
+                useheight = int(height)
+                break
+
+        # Provide file data from height
+        store.hashfile.seek(4 + useheight*16)
+        return store.hashfile.read(store.numhashes-useheight)
 
     def disconnect_block(store, block_id, chain_id):
         # Get block height
