@@ -349,11 +349,11 @@ width: 88%;
 }
 
 #main h3 {
-color: #1F1F20;
-text-transform: uppercase;
-text-shadow: 0 1px 0 #fff;
-font-size: 13px;
-margin: 8px 20px;
+	color: #1F1F20;
+	text-transform: uppercase;
+	text-shadow: 0 1px 0 #fff;
+	font-size: 14px;
+	margin: 9px 20px;
 }
 
 /* Modules */
@@ -366,7 +366,7 @@ margin: 8px 20px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	background: #ffffff;
+	background-color: #F5FBFF;
 	box-shadow: 0px 0px 12px 2px rgba(50, 136, 221, 0.5);
 }
 
@@ -377,12 +377,13 @@ float: left;
 }
 
 .module header {
-height: 38px;
-width: 100%;
-background: #F1F1F4 url(secondary_bar.png) repeat-x;
--webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px;
--moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px;
-border-top-left-radius: 5px; border-top-right-radius: 5px;
+	height: 38px;
+	width: 100%;
+	background-color: #EEEFEF;
+	border-bottom: 1px solid #AAAAAA;
+	-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px; border-top-right-radius: 5px;
 }
 
 .module footer {
@@ -495,10 +496,15 @@ border-bottom: 1px dotted #ccc;
 }
 
 .tablesorter thead tr, .tablesorterpager thead tr {
-height: 34px;
-background: url(table_sorter_header.png) repeat-x;
-text-align: left;
-cursor: pointer;
+	height: 34px;
+	background-color: #EEEFEF;
+	text-align: left;
+	cursor: pointer;
+}
+
+.tablesorter thead th, .tablesorterpager thead th {
+	border-bottom: 1px solid #AAAAAA;
+	border-top: 1px solid #AAAAAA;
 }
 
 .tablesorter td , .tablesorterpager td {
