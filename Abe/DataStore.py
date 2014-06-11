@@ -2506,8 +2506,9 @@ store._ddl['txout_approx'],
                     winner_height -= 1
                 for block_id in to_disconnect:
                     store.disconnect_block(block_id, chain_id)
-                for block_id in to_connect if block_id != b['block_id']: # if to prevent duplicate connect_block
-                    store.connect_block(block_id, chain_id)
+                for block_id in to_connect:
+                    if block_id != b['block_id']: # if to prevent duplicate connect_block
+                        store.connect_block(block_id, chain_id)
 
             elif b['hashPrev'] == GENESIS_HASH_PREV:
                 in_longest = 1  # Assume only one genesis block per chain.  XXX
