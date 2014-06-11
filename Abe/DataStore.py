@@ -2506,7 +2506,7 @@ store._ddl['txout_approx'],
                     winner_height -= 1
                 for block_id in to_disconnect:
                     store.disconnect_block(block_id, chain_id)
-                for block_id in to_connect:
+                for block_id in to_connect if block_id != b['block_id']: # if to prevent duplicate connect_block
                     store.connect_block(block_id, chain_id)
 
             elif b['hashPrev'] == GENESIS_HASH_PREV:
@@ -2603,17 +2603,27 @@ store._ddl['txout_approx'],
             (block_id,))[0]
 
     def change_num_hashes(store, amount):
-        store.numhashes += amount
+        # Use exact amount to prevent any bugs involving multiple block connections or disconnections
+        store.numhashes = amount
         store.hashfile.seek(0)
         store.hashfile.write(struct.pack(">I", store.numhashes))
 
     def add_block_hash_to_file(store, block_hash, height):
         store.hashfile.seek(4 + 16*height)
         store.hashfile.write(struct.pack("16s", block_hash))
-        store.change_num_hashes(1)
+        store.change_num_hashes(height + 1)
 
     def disconnect_block(store, block_id, chain_id):
-        store.change_num_hashes(-1)
+        # Get block height
+
+        height = store.selectrow("""
+            SELECT block_height
+            FROM block
+            WHERE block_id = ?
+        """, (block_id,))
+        
+        store.change_num_hashes(int(height))
+
         store.sql("""
             UPDATE chain_candidate
                SET in_longest = 0
@@ -2629,7 +2639,6 @@ store._ddl['txout_approx'],
             WHERE block_id = ?
         """, (block_id,))
         
-        # This can be called twice during a fork due to slight bug in abe but no big problem
         store.add_block_hash_to_file(store.hashout(hash), int(height))
 
         store.sql("""
