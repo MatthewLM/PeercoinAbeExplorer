@@ -2507,15 +2507,13 @@ store._ddl['txout_approx'],
                 for block_id in to_disconnect:
                     store.disconnect_block(block_id, chain_id)
                 for block_id in to_connect:
-                    if block_id != b['block_id']: # if to prevent duplicate connect_block
+                    if block_id != b['block_id']: # to prevent duplicate connect_block
                         store.connect_block(block_id, chain_id)
 
             elif b['hashPrev'] == GENESIS_HASH_PREV:
                 in_longest = 1  # Assume only one genesis block per chain.  XXX
             else:
                 in_longest = 0
-
-        store.add_block_hash_to_file(b['hash'], b['height'])
 
         store.sql("""
             INSERT INTO chain_candidate (
@@ -2528,6 +2526,7 @@ store._ddl['txout_approx'],
                 UPDATE chain
                    SET chain_last_block_id = ?
                  WHERE chain_id = ?""", (top['block_id'], chain_id))
+            store.add_block_hash_to_file(b['hash'], b['height'])
 
         if store.use_firstbits and b['height'] is not None:
             (addr_vers,) = store.selectrow("""
