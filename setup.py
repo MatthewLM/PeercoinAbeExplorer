@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-execfile("Abe/version.py")
+execfile("Peercoin-Abe/version.py")
 
 setup(
     name         = "Peercoin-Abe",
