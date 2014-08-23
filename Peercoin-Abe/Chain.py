@@ -23,6 +23,8 @@ def create(policy, **kwargs):
         return Sha256Chain(**kwargs)
     if policy == "Latium":
 	    return Latium(**kwargs)
+    if policy == "Peercoin":
+        return Peercoin(**kwargs)
     if policy == "NovaCoin":
         return NovaCoin(**kwargs)
     return Sha256NmcAuxPowChain(**kwargs)
@@ -151,4 +153,19 @@ class Latium(LtcScryptChain, PpcPosChain):
 
     datadir_conf_file_name = "Latium.conf"
     datadir_rpcport = 12689
+
+class Peercoin(LtcScryptChain, PpcPosChain):
+    def __init__(chain, **kwargs):
+        chain.name = 'Peercoin'
+        chain.code3 = 'PPC'
+        chain.address_version = "\x85"
+        chain.magic = "\xe6\xe8\xe9\xe5"
+        chain.decimals = 6
+        Chain.__init__(chain, **kwargs)
+
+    def has_feature(chain, feature):
+        return feature == 'nvc_proof_of_stake'
+
+    datadir_conf_file_name = "ppcoin.conf"
+    datadir_rpcport = 9902
 
