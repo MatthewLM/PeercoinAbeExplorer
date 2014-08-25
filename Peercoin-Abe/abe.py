@@ -71,7 +71,7 @@ DEFAULT_TEMPLATE = """
 <body>
     <section id="main">
     <a href="http://peercoinexplorer.info" title="Go back to the peercoinexplorer.info home">
-        <img id="peercoinexplorerinfo" alt="Go back to the peercoinexplorer.info home" src="%(dotdot)s(STATIC_PATH)speercoin_explorer_info.png" />
+        <img id="peercoinexplorerinfo" alt="Go back to the peercoinexplorer.info home" src="%(dotdot)s%(STATIC_PATH)speercoin_explorer_info.png" />
     </a>
     %(body)s
         <div id="footer">
