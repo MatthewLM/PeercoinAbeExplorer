@@ -27,6 +27,9 @@ import re
 import errno
 import struct
 
+from dateutil import parser
+import time
+
 import Chain
 
 # bitcointools -- modified deserialize.py to return raw transaction
@@ -2905,7 +2908,7 @@ store._ddl['txout_approx'],
                         'hashPrev': prev_hash,
                         'hashMerkleRoot':
                             rpc_block['merkleroot'].decode('hex')[::-1],
-                        'nTime':    int(rpc_block['time']),
+                        'nTime':    int(time.mktime(parser.parse(rpc_block['time']).timetuple())),
                         'nBits':    int(rpc_block['bits'], 16),
                         'nNonce':   int(rpc_block['nonce']),
                         'transactions': [],
