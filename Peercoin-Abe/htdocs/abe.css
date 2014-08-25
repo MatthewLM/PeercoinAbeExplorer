@@ -10,6 +10,13 @@ th{
 section#main{
     width: 100%;
 }
+#peercoinexplorerinfo{
+	margin: auto;
+	width: 350px;
+	position: absolute;
+	top: 15px;
+	left: 40px;
+}
 #links{
     position: absolute;
     right: 40px;

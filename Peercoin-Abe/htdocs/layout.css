@@ -23,7 +23,7 @@ html, body {
 }
 
 a:link, a:visited {
-	color: #3070A7;
+	color: #087D00;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -366,8 +366,8 @@ width: 88%;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	background-color: #F5FBFF;
-	box-shadow: 0px 0px 12px 2px rgba(50, 136, 221, 0.5);
+	background-color: #FEFFF3;
+	box-shadow: 0px 0px 12px 2px rgba(81, 182, 43, 0.8);
 }
 
 #main .module header h3 {
