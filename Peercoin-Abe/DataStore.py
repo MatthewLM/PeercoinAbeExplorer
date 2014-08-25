@@ -2638,7 +2638,7 @@ store._ddl['txout_approx'],
     def disconnect_block(store, block_id, chain_id):
         # Get block height
 
-        height = store.selectrow("""
+        height, = store.selectrow("""
             SELECT block_height
             FROM block
             WHERE block_id = ?
