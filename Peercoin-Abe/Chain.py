@@ -154,7 +154,7 @@ class Latium(LtcScryptChain, PpcPosChain):
     datadir_conf_file_name = "Latium.conf"
     datadir_rpcport = 12689
 
-class Peercoin(LtcScryptChain, PpcPosChain):
+class Peercoin(Sha256Chain, PpcPosChain):
     def __init__(chain, **kwargs):
         chain.name = 'Peercoin'
         chain.code3 = 'PPC'
