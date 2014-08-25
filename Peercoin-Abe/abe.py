@@ -39,15 +39,16 @@ import base58
 
 __version__ = version.__version__
 
-ABE_APPNAME = "RBT Abe"
+ABE_APPNAME = "PPC Abe"
 ABE_VERSION = __version__
-ABE_URL = 'https://github.com/Rimbit/RimbitExplorer'
+ABE_URL = 'https://github.com/MatthewLM/PeercoinAbeExplorer'
 
 COPYRIGHT_YEARS = '2011'
 COPYRIGHT = "Abe developers"
 COPYRIGHT_URL = 'https://github.com/bitcoin-abe'
 
-DONATIONS_BTC = '1ExARP8eBAYGT39HBzzbN5nsB8t5C4w4Tx'
+DONATIONS_BTC = '1KXgUvqsXgcJFrZDGjogpVDkqoiTj3EpTF'
+DONATIONS_PPC = '1KXgUvqsXgcJFrZDGjogpVDkqoiTj3EpTF'
 
 TIME1970 = time.strptime('1970-01-01','%Y-%m-%d')
 EPOCH1970 = calendar.timegm(TIME1970)
@@ -67,7 +68,7 @@ DEFAULT_TEMPLATE = """
     %(extraHead)s
     <title>%(title)s</title>
 </head>
-<body onload="parent.explorerLoaded()">
+<body>
     <section id="main">
     %(body)s
         <div id="footer">
@@ -78,6 +79,7 @@ DEFAULT_TEMPLATE = """
                 </span>
                 %(download)s
                 Tips appreciated!
+                <a href="http://blockchain.info/address/%(DONATIONS_PPC)s">PPC</a> 
                 <a href="http://blockchain.info/address/%(DONATIONS_BTC)s">BTC</a>
             </p>
         </div>
@@ -247,6 +249,8 @@ class Abe:
                 # for a response!  XXX Could use threads, timers, or a
                 # cron job.
                 abe.store.catch_up()
+            
+	    page['body'] += abe.search_form(page)
 
             handler(page)
         except PageNotFound:
@@ -398,21 +402,25 @@ class Abe:
         page['title'] = chain.name
 
         body = page['body']
-        body += abe.search_form(page)
 
         count = get_int_param(page, 'count') or 20
         hi = get_int_param(page, 'hi')
         orig_hi = hi
 
-        if hi is None:
-            row = abe.store.selectrow("""
-                SELECT b.block_height
-                  FROM block b
-                  JOIN chain c ON (c.chain_last_block_id = b.block_id)
-                 WHERE c.chain_id = ?
-            """, (chain.id,))
-            if row:
+        row = abe.store.selectrow("""
+            SELECT b.block_height
+            FROM block b
+            JOIN chain c ON (c.chain_last_block_id = b.block_id)
+            WHERE c.chain_id = ?
+        """, (chain.id,))
+
+        if row:
+	    max_height = row[0]
+            if hi is None:
                 hi = row[0]
+	else:
+	    max_height = 0
+
         if hi is None:
             if orig_hi is None and count > 0:
                 body += ['<p>I have no blocks in this chain.</p>']
@@ -439,10 +447,13 @@ class Abe:
             hi = int(rows[0][1])
         basename = os.path.basename(page['env']['PATH_INFO'])
 
-        nav = ['<div id="nav"><p id="navP1"><a href="',
-               basename, '?count=', str(count), '">&lt;&lt;</a>']
-        nav += [' <a href="', basename, '?hi=', str(hi + count),
-                 '&amp;count=', str(count), '">&lt;</a></p><p id="navP2">']
+        nav = ['<div id="nav"><p id="navP1">']
+	if max_height > hi:
+	    nav += ['<a href="',
+               basename, '?count=', str(count), '">&#9668;&#9668;</a>']
+            nav += [' <a href="', basename, '?hi=', str(hi + count),
+                 '&amp;count=', str(count), '">&#9668;<lt;</a>']
+        nav += ['</p><p id="navP2">']
                  
         for c in (20, 50, 100, 500, 1000):
             nav += [' ']
@@ -457,14 +468,13 @@ class Abe:
 
         nav += ['</p><p id="navP3">']         
                  
-        nav += [' ', '&gt;']
         if hi >= count:
-            nav[-1] = ['<a href="', basename, '?hi=', str(hi - count),
-                        '&amp;count=', str(count), '">', nav[-1], '</a>']
-        nav += [' ', '&gt;&gt;']
+            nav += ['<a href="', basename, '?hi=', str(hi - count),
+                        '&amp;count=', str(count), '"> &#9658;</a>']
+
         if hi != count - 1:
-            nav[-1] = ['<a href="', basename, '?hi=', str(count - 1),
-                        '&amp;count=', str(count), '">', nav[-1], '</a>']
+            nav += ['<a href="', basename, '?hi=', str(count - 1),
+                        '&amp;count=', str(count), '"> &#9658;&#9658;</a>']
         nav += ['</p></div>']
         
         extra = False
@@ -1457,8 +1467,8 @@ class Abe:
         
         last = abe.get_max_block_height(chain)                      
         abe.difficulty_graph(page, "All Time", "alltime", None, "%e %b %Y", abe.get_difficulties(0, last, chain.id))
-        abe.difficulty_graph(page, "4,032 Blocks (Approx. One week)", "oneweek", 86400, "%e %b %Y", abe.get_difficulties(last - 4032, last, chain.id))
-        abe.difficulty_graph(page, "576 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 576, last, chain.id))
+        abe.difficulty_graph(page, "1,008 Blocks (Approx. One week)", "oneweek", 86400, "%e %b %Y", abe.get_difficulties(last - 1008, last, chain.id))
+        abe.difficulty_graph(page, "144 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 144, last, chain.id))
         
     def handle_t(abe, page):
         abe.show_search_results(

@@ -10,6 +10,15 @@ th{
 section#main{
     width: 100%;
 }
+#links{
+    position: absolute;
+    right: 40px;
+    top: 36px;
+}
+#links a{
+    display: block;
+    padding: 5px;
+}
 #footer{
     text-align: center;
     height: 60px;
@@ -40,7 +49,7 @@ section#main{
     left: calc(50% - 100px);
 }
 #navP1, #navP3{
-    width: 40px;
+    width: 60px;
 }
 #navP3{
     right: 0;
