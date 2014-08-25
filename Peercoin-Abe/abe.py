@@ -82,7 +82,7 @@ DEFAULT_TEMPLATE = """
                 </span>
                 %(download)s
                 Tips appreciated!
-                <a href="http://peercoinexplorer.com/address/%(DONATIONS_PPC)s">PPC</a> 
+                <a href="http://peercoinexplorer.info/address/%(DONATIONS_PPC)s">PPC</a> 
                 <a href="http://blockchain.info/address/%(DONATIONS_BTC)s">BTC</a>
             </p>
         </div>
