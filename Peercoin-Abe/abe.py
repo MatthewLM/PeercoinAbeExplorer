@@ -48,7 +48,7 @@ COPYRIGHT = "Abe developers"
 COPYRIGHT_URL = 'https://github.com/bitcoin-abe'
 
 DONATIONS_BTC = '1KXgUvqsXgcJFrZDGjogpVDkqoiTj3EpTF'
-DONATIONS_PPC = '1KXgUvqsXgcJFrZDGjogpVDkqoiTj3EpTF'
+DONATIONS_PPC = 'PPfGPJ7LDyJnP81vqLAdsZsdp7engHYxix'
 
 TIME1970 = time.strptime('1970-01-01','%Y-%m-%d')
 EPOCH1970 = calendar.timegm(TIME1970)
@@ -70,6 +70,9 @@ DEFAULT_TEMPLATE = """
 </head>
 <body>
     <section id="main">
+    <a href="peercoinexplorer.info" title="Go back to the peercoinexplorer.info home">
+        <img id="peercoinexplorerinfo" alt="Go back to the peercoinexplorer.info home" src="%(dotdot)s(STATIC_PATH)speercoin_explorer_info.png" />
+    </a>
     %(body)s
         <div id="footer">
             <p><a href="%(dotdot)sq">API</a> (machine-readable pages)</p>
@@ -79,7 +82,7 @@ DEFAULT_TEMPLATE = """
                 </span>
                 %(download)s
                 Tips appreciated!
-                <a href="http://blockchain.info/address/%(DONATIONS_PPC)s">PPC</a> 
+                <a href="http://peercoinexplorer.com/address/%(DONATIONS_PPC)s">PPC</a> 
                 <a href="http://blockchain.info/address/%(DONATIONS_BTC)s">BTC</a>
             </p>
         </div>
@@ -2330,6 +2333,7 @@ def main(argv):
             "COPYRIGHT_YEARS": COPYRIGHT_YEARS,
             "COPYRIGHT_URL": COPYRIGHT_URL,
             "DONATIONS_BTC": DONATIONS_BTC,
+            "DONATIONS_PPC": DONATIONS_PPC,
             "CONTENT_TYPE": DEFAULT_CONTENT_TYPE,
             "HOMEPAGE": DEFAULT_HOMEPAGE,
             },
