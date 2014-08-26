@@ -298,7 +298,6 @@ class Abe:
         page['title'] = ABE_APPNAME + ' Search'
         body = page['body']
         body += [
-            abe.search_form(page),
             '<table>\n',
             '<tr><th>Currency</th><th>Code</th><th>Block</th><th>Time</th>',
             '<th>Started</th><th>Age (days)</th><th>Coins Created</th>',
@@ -487,10 +486,14 @@ class Abe:
                  '<header><h3>BLOCKS</h3></header>'
                  , nav, '\n',
                  '<table class="tablesorter" cellspacing="0"><thead>'
-                 '<tr><th>Block</th><th>Approx. Time</th>',
-                 '<th>Transactions</th><th>Value Out</th>',
-                 '<th>Difficulty</th><th>Outstanding</th>',
-                 '<th>Average Age</th><th>Chain Age</th>',
+                 '<tr><th>Block</th>',
+                 '<th>Approx. Time</th>',
+                 '<th>Transactions</th>',
+                 '<th>Value Out</th>',
+                 '<th>Difficulty</th>',
+                 '<th>Outstanding</th>',
+                 '<th>Average Age</th>',
+                 '<th>Chain Age</th>',
                  '<th>% ',
                  '<a href="https://en.bitcoin.it/wiki/Bitcoin_Days_Destroyed">',
                  'CoinDD</a></th>',
@@ -1463,6 +1466,7 @@ class Abe:
                          '{axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer, tickOptions: {formatString: "', format, '"}, min: ', min,'000, max: ', max,'000, tickInterval: ', interval if interval else "null",'}}, seriesDefaults: {showMarker: false}}',
                          ');});</script></article>']
 
+    ''' Peercoin has two difficulties and we don't have the capability to distinguish them
     def handle_difficulty(abe, page):
         abe.include_jqplot(page)
         chain = page['chain'];
@@ -1471,7 +1475,7 @@ class Abe:
         last = abe.get_max_block_height(chain)                      
         abe.difficulty_graph(page, "All Time", "alltime", None, "%e %b %Y", abe.get_difficulties(0, last, chain.id))
         abe.difficulty_graph(page, "1,008 Blocks (Approx. One week)", "oneweek", 86400, "%e %b %Y", abe.get_difficulties(last - 1008, last, chain.id))
-        abe.difficulty_graph(page, "144 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 144, last, chain.id))
+        abe.difficulty_graph(page, "144 Blocks (Approx. One day)", "oneday", 3600, "%R", abe.get_difficulties(last - 144, last, chain.id))'''
         
     def handle_t(abe, page):
         abe.show_search_results(
