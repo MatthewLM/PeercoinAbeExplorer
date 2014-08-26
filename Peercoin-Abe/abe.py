@@ -1224,7 +1224,7 @@ class Abe:
     def search_form(abe, page):
         q = (page['params'].get('q') or [''])[0]
         return [
-            '<article class="module width_half centerHalf">'
+            '<article id="search" class="module width_half centerHalf">'
             '<header><h3>SEARCH</h3></header>'
             '<div class="module_content">'
             '<form action="', page['dotdot'], 'search">\n'
