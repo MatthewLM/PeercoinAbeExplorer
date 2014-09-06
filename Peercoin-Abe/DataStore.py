@@ -2635,11 +2635,11 @@ store._ddl['txout_approx'],
 
         store.hashfile.seek(4 + useheight*16)
 
-        # Only give maximum of 10000 hashes
+        # Only give maximum of 50000 hashes
 
         amount = store.numhashes - useheight
-        if amount > 10000:
-            amount = 10000
+        if amount > 50000:
+            amount = 50000
 
         return store.hashfile.read(amount*16)
 
