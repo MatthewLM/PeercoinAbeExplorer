@@ -13,7 +13,7 @@ Create abe-sqlite.conf with contents:
 
 Perform the initial data load:
 
-    python -m Abe.abe --config abe-sqlite.conf --commit-bytes 100000 --no-serve
+    python -m Peercoin-Abe.abe --config abe-sqlite.conf --commit-bytes 100000 --no-serve
 
 Look for output such as:
 
@@ -24,7 +24,7 @@ Look for output such as:
 This step may take several days depending on chain size and hardware.
 Then run the web server as:
 
-    python -m Abe.abe --config abe-sqlite.conf
+    python -m Peercoin-Abe.abe --config abe-sqlite.conf
 
 You should see:
 

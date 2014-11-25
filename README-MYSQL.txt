@@ -1,4 +1,4 @@
-Abe setup for MySQL: 8 easy steps.
+Peercoin-Abe setup for MySQL: 8 easy steps.
 
 1. Run the Bitcoin client once.  It'll create a .bitcoin directory in
 your home directory, along with some other necessary files.
@@ -34,7 +34,7 @@ replacing "PASSWORD" with a password you choose:
 
 7. Perform the initial data load:
 
-    python -m Abe.abe --config abe-my.conf --commit-bytes 100000 --no-serve
+    python -m Peercoin-Abe.abe --config abe-my.conf --commit-bytes 100000 --no-serve
 
 Look for output such as:
 
@@ -46,7 +46,7 @@ This step may take several days depending on chain size and hardware.
 
 8. Then run the web server as:
 
-    python -m Abe.abe --config abe-my.conf
+    python -m Peercoin-Abe.abe --config abe-my.conf
 
 You should see:
 
@@ -63,7 +63,7 @@ can help when IO is the bottleneck.
 
 Compression can be done at any time, however it is desirable to do it as
 early as possible; it will take much longer to run on a fully populated
-database. Also please note that you should not compress tables while Abe is
+database. Also please note that you should not compress tables while Peercoin-Abe is
 running.
 
 The general command to compress a table is:
@@ -89,7 +89,7 @@ ALTER TABLE chain_candidate ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=2;
 ALTER TABLE block_next ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=2;
 
 These settings gave been tested on a MySQL database with binary-type=binary
-and default settings for firtbits and scripsig. Compression of a full Abe
+and default settings for firtbits and scripsig. Compression of a full Peercoin-Abe
 database reduced its size from 36G (37254132 KiB) down to only 17G
 (17409008 KiB), a 53% compression ratio.
 
