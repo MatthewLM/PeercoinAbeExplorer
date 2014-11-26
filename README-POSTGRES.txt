@@ -3,7 +3,7 @@ PostgreSQL on Debian/Ubuntu.
 Run the Bitcoin client to ensure that your copy of the block chain is
 up to date.
 
-Choose or create a system account to run Abe.  Replace USER with its
+Choose or create a system account to run Peercoin-Abe.  Replace USER with its
 username throughout these instructions.
 
     apt-get install python2.7 python-crypto postgresql-8.4 python-psycopg2
@@ -27,7 +27,7 @@ Create file abe-pg.conf with contents:
 
 Perform the initial data load:
 
-    python -m Abe.abe --config abe-pg.conf --commit-bytes 100000 --no-serve
+    python -m Peercoin-Abe.abe --config abe-pg.conf --commit-bytes 100000 --no-serve
 
 Look for output such as:
 
@@ -38,7 +38,7 @@ Look for output such as:
 This step may take several days depending on chain size and hardware.
 Then run the web server as:
 
-    python -m Abe.abe --config abe-pg.conf
+    python -m Peercoin-Abe.abe --config abe-pg.conf
 
 You should see:
 
