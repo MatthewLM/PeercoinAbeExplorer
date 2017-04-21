@@ -5,7 +5,7 @@ html, body{
     font-size: smaller;
 }
 th{
-    padding-left: 10px;
+    padding-left: 20px;
 }
 section#main{
     width: 100%;
@@ -26,6 +26,7 @@ section#main{
 }
 #footer{
     text-align: center;
+    color: white;
     height: 60px;
     clear: both;
     padding: 10px;

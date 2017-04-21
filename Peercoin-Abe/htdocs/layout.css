@@ -9,7 +9,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-	background: #F8F8F8 url(sidebar.png) repeat-y;
+	background: #333333 url(sidebar.png) repeat-y;
 	background-size: 12.1%;
 	font-size: 12px;
 }
@@ -23,7 +23,7 @@ html, body {
 }
 
 a:link, a:visited {
-	color: #087D00;
+	color: #3CB054;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -367,7 +367,6 @@ width: 88%;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	background-color: #FFFEF3;
-	box-shadow: 0px 0px 12px 2px rgba(81, 182, 43, 0.8);
 }
 
 #main .module header h3 {
@@ -508,7 +507,7 @@ border-bottom: 1px dotted #ccc;
 }
 
 .tablesorter td , .tablesorterpager td {
-padding: 15px 10px;
+padding: 15px 20px;
 }
 
 .tablesorter input[type=image], .tablesorterpager input[type=image] {

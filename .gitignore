@@ -5,3 +5,7 @@ MANIFEST
 build
 dist
 *.sw*
+tags
+Session.vim
+.directory
+*.crt
